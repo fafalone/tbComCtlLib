@@ -1,0 +1,58 @@
+Module modUpDown
+
+Public Const UPDOWN_CLASS = "msctls_updown32"
+
+Public Const UDN_FIRST As Long = (H_MAX - 721)
+Public Const UDN_DELTAPOS As Long = (UDN_FIRST - 1)
+
+Public Enum UpDownStyles
+	UDS_WRAP = &H0001
+	UDS_SETBUDDYINT = &H0002
+	UDS_ALIGNRIGHT = &H0004
+	UDS_ALIGNLEFT = &H0008
+	UDS_AUTOBUDDY = &H0010
+	UDS_ARROWKEYS = &H0020
+	UDS_HORZ = &H0040
+	UDS_NOTHOUSANDS = &H0080
+	UDS_HOTTRACK = &H0100
+End Enum
+
+
+Public Const UDM_SETRANGE As Long = (WM_USER + 101)
+Public Const UDM_GETRANGE As Long = (WM_USER + 102)
+Public Const UDM_SETPOS As Long = (WM_USER + 103)
+Public Const UDM_GETPOS As Long = (WM_USER + 104)
+Public Const UDM_SETBUDDY As Long = (WM_USER + 105)
+Public Const UDM_GETBUDDY As Long = (WM_USER + 106)
+Public Const UDM_SETACCEL As Long = (WM_USER + 107)
+Public Const UDM_GETACCEL As Long = (WM_USER + 108)
+Public Const UDM_SETBASE As Long = (WM_USER + 109)
+Public Const UDM_GETBASE As Long = (WM_USER + 110)
+Public Const UDM_SETRANGE32 As Long = (WM_USER + 111)
+Public Const UDM_GETRANGE32 As Long = (WM_USER + 112)
+Public Const UDM_GETPOS32 As Long = (WM_USER + 114)
+Public Const UDM_SETPOS32 As Long = (WM_USER + 113)
+Public Const UDM_SETUNICODEFORMAT  = CCM_SETUNICODEFORMAT
+Public Const UDM_GETUNICODEFORMAT  = CCM_GETUNICODEFORMAT
+
+
+
+Public Type UDACCEL
+	nSec As LONG
+	nInc As LONG
+End Type
+
+Public Const UD_MAXVAL As Integer = &H7fff
+Public Const UD_MINVAL As Integer = &H8000
+
+Public Type NMUPDOWN
+	hdr As NMHDR
+	iPos As LONG
+	iDelta As LONG
+End Type
+
+Public Declare PtrSafe Function CreateUpDownControl Lib "comctl32" (ByVal dwStyle As UpDownStyles, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, _
+                                                                    ByVal hParent As LongPtr, ByVal nID As Long, ByVal hInst As LongPtr, ByVal hBuddy As LongPtr, _
+                                                                    ByVal nUpper As Long, ByVal nLower As Long, ByVal nPos As Long) As LongPtr
+                                                                    
+End Module

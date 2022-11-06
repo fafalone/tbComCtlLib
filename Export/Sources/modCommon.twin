@@ -1,0 +1,391 @@
+
+Module modCommon
+
+#If TB_SHELLLIB_DEFINED = 0 Then
+Public Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As LongPtr, ByVal wMsg As Long, ByVal wParam As LongPtr, lParam As Any) As LongPtr
+Public Declare PtrSafe Function SendMessageW Lib "user32" (ByVal hWnd As LongPtr, ByVal wMsg As Long, ByVal wParam As LongPtr, lParam As Any) As LongPtr
+
+
+Public Const NFR_UNICODE = 2
+
+Public Declare PtrSafe Function CreateWindowEx Lib "user32" Alias "CreateWindowExW" (ByVal dwExStyle As Long, ByVal lpClassName As LongPtr, ByVal lpWindowName As LongPtr, ByVal dwStyle As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As LongPtr, ByVal hMenu As LongPtr, ByVal hInstance As LongPtr, lpParam As Any) As LongPtr
+Public Declare PtrSafe Function DestroyWindow Lib "user32" (ByVal hWnd As LongPtr) As Long
+#If Win64 Then
+Public Declare PtrSafe Function GetWindowLong Lib "user32" Alias "GetWindowLongPtrW" (ByVal hWnd As LongPtr, ByVal nIndex As GWL_nIndex) As LongPtr
+Public Declare PtrSafe Function SetWindowLong Lib "user32" Alias "SetWindowLongPtrW" (ByVal hWnd As LongPtr, ByVal nIndex As GWL_nIndex, ByVal dwNewLong As LongPtr) As LongPtr
+#Else
+Public Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongW" (ByVal hWnd As Long, ByVal nIndex As GWL_nIndex) As Long
+Public Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongW" (ByVal hwnd As Long, ByVal nIndex As GWL_nIndex, ByVal dwNewLong As Long) As Long
+#End If
+
+Public Declare PtrSafe Function Shell_GetImageLists Lib "shell32" (phiml As LongPtr, phimlsmall As LongPtr) As Long
+
+Public Type UUID
+	Data1 As Long
+	Data2 As Integer
+	Data3 As Integer
+	Data4(0 To 7) As Byte
+End Type
+
+Public Type RECT
+  Left As Long
+  Top As Long
+  Right As Long
+  Bottom As Long
+End Type
+
+Public Type POINT
+    X As Long
+    Y As Long
+End Type
+
+Public Type SIZE
+    cx As long
+    cy As long
+End Type
+
+Public Type SYSTEMTIME
+	wYear As Integer
+	wMonth As Integer
+	wDayOfWeek As Integer
+	wDay As Integer
+	wHour As Integer
+	wMinute As Integer
+	wSecond As Integer
+	wMilliseconds As Integer
+End Type
+
+Public Type WINDOWPOS
+    hWnd As LongPtr
+    hWndInsertAfter As LongPtr
+    X As Long
+    Y As Long
+    CX As Long
+    CY As Long
+    dwFlags As SWP_Flags
+End Type
+
+Public Enum GWL_nIndex
+  GWL_WNDPROC = (-4)
+  GWL_HINSTANCE = (-6)
+  GWL_HWNDPARENT = (-8)
+  GWL_ID = (-12)
+  GWL_STYLE = (-16)
+  GWL_EXSTYLE = (-20)
+  GWL_USERDATA = (-21)
+End Enum
+
+#End If
+
+Public Const WM_USER = &H400
+
+Public Enum SWP_Flags
+    SWP_NOSIZE = &H1
+    SWP_NOMOVE = &H2
+    SWP_NOZORDER = &H4
+    SWP_NOREDRAW = &H8
+    SWP_NOACTIVATE = &H10
+    SWP_FRAMECHANGED = &H20
+    SWP_DRAWFRAME = &H20
+    SWP_SHOWWINDOW = &H40
+    SWP_HIDEWINDOW = &H80
+    SWP_NOCOPYBITS = &H100
+    SWP_NOREPOSITION = &H200
+    SWP_NOSENDCHANGING = &H400
+    
+    SWP_DEFERERASE = &H2000
+    SWP_ASYNCWINDOWPOS = &H4000
+End Enum
+Public Const HWND_DESKTOP = 0&
+Public Const HWND_TOP = 0&
+Public Const HWND_BOTTOM = 1&
+Public Const HWND_TOPMOST = -1
+Public Const HWND_NOTOPMOST = -2
+
+Public Enum DT_Flags
+    DT_BOTTOM = &H8&
+    DT_CENTER = &H1&
+    DT_LEFT = &H0&
+    DT_CALCRECT = &H400&
+    DT_WORDBREAK = &H10&
+    DT_VCENTER = &H4&
+    DT_TOP = &H0&
+    DT_TABSTOP = &H80&
+    DT_SINGLELINE = &H20&
+    DT_RIGHT = &H2&
+    DT_NOCLIP = &H100&
+    DT_INTERNAL = &H1000&
+    DT_EXTERNALLEADING = &H200&
+    DT_EXPANDTABS = &H40&
+    DT_CHARSTREAM = 4&
+    DT_NOPREFIX = &H800&
+    DT_EDITCONTROL = &H2000&
+    DT_PATH_ELLIPSIS = &H4000&
+    DT_END_ELLIPSIS = &H8000&
+    DT_MODIFYSTRING = &H10000
+    DT_RTLREADING = &H20000
+    DT_WORD_ELLIPSIS = &H40000
+End Enum
+
+Public Declare PtrSafe Function SetWindowPos Lib "user32" (ByVal hWnd As LongPtr, ByVal hWndInsertAfter As LongPtr, ByVal X As Long, ByVal Y As Long, ByVal CX As Long, ByVal CY As Long, ByVal wFlags As SWP_Flags) As Long
+
+Public Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal hWnd As LongPtr, lpRect As RECT) As Long
+Public Declare PtrSafe Function GetClientRect Lib "user32" (ByVal hWnd As LongPtr, lpRect As RECT) As Long
+Public Declare PtrSafe Function SetWindowTheme Lib "uxtheme" (ByVal hWnd As LongPtr, ByVal pszSubAppName As LongPtr, ByVal pszSubIdList As LongPtr) As Long
+
+Public Enum ICC_CLASS
+    ICC_LISTVIEW_CLASSES = &H1&
+    ICC_TREEVIEW_CLASSES = &H2&
+    ICC_BAR_CLASSES = &H4&
+    ICC_TAB_CLASSES = &H8&
+    ICC_UPDOWN_CLASS = &H10&
+    ICC_PROGRESS_CLASS = &H20&
+    ICC_HOTKEY_CLASS = &H40&
+    ICC_ANIMATE_CLASS = &H80&
+    ICC_DATE_CLASSES = &H100&
+    ICC_USEREX_CLASSES = &H200&
+    ICC_COOL_CLASSES = &H400&
+    ICC_INTERNET_CLASSES = &H800&
+    ICC_PAGESCROLLER_CLASS = &H1000&
+    ICC_NATIVEFNTCTL_CLASS = &H2000&
+    ICC_STANDARD_CLASSES = &H4000&
+    ICC_LINK_CLASS = &H8000&
+
+    ICC_WIN95_CLASSES = &HFF&
+    ICC_ALL_CLASSES = &HFDFF& ' combination of all values above
+End Enum
+Public Type INITCOMMONCONTROLSEX
+   dwSize As Long
+   dwICC As ICC_CLASS
+End Type
+
+Public Declare PtrSafe Sub InitCommonControls Lib "comctl32.dll" ()
+
+Public Declare PtrSafe Function InitCommonControlsEx Lib "comctl32.dll" (picce As INITCOMMONCONTROLSEX) As Long
+
+
+Public Const CCM_FIRST = &H2000
+Public Const CCM_SETBKCOLOR = (CCM_FIRST + 1)   ' lParam is bkColor
+Public Const CCM_SETCOLORSCHEME = (CCM_FIRST + 2)     ' lParam is color scheme
+Public Const CCM_GETCOLORSCHEME = (CCM_FIRST + 3)     ' fills in COLORSCHEME pointed to by lParam
+Public Const CCM_GETDROPTARGET = (CCM_FIRST + 4)
+Public Const CCM_SETUNICODEFORMAT = (CCM_FIRST + 5)
+Public Const CCM_GETUNICODEFORMAT = (CCM_FIRST + 6)
+Public Const CCM_SETVERSION = (CCM_FIRST + 7)
+Public Const CCM_GETVERSION = (CCM_FIRST + 8)
+Public Const CCM_SETNOTIFYWINDOW = (CCM_FIRST + 9) '// wParam == hwndParent.
+Public Const CCM_SETWINDOWTHEME = (CCM_FIRST + 11)
+Public Const CCM_DPISCALE = (CCM_FIRST + 12)
+Public Const CCM_TRANSLATEACCELERATOR = &H461 '(WM_USER + 97)
+
+Public Enum CommonStyles
+	CCS_TOP = &H00000001
+	CCS_NOMOVEY = &H00000002
+	CCS_BOTTOM = &H00000003
+	CCS_NORESIZE = &H00000004
+	CCS_NOPARENTALIGN = &H00000008
+    CCS_NOHILITE = &H00000010 'UNDOCUMENTED
+	CCS_ADJUSTABLE = &H00000020
+	CCS_NODIVIDER = &H00000040
+	CCS_VERT = &H00000080
+	CCS_LEFT = (CCS_VERT Or CCS_TOP)
+	CCS_RIGHT = (CCS_VERT Or CCS_BOTTOM)
+	CCS_NOMOVEX = (CCS_VERT Or CCS_NOMOVEY)
+End Enum
+
+Public Enum ODT
+	ODT_HEADER = 100
+	ODT_TAB = 101
+	ODT_LISTVIEW = 102
+End Enum
+
+Public Const NM_FIRST                As Long = 0
+Public Const NM_OUTOFMEMORY          As Long = (NM_FIRST - 1)
+Public Const NM_CLICK                As Long = (NM_FIRST - 2) 'uses NMCLICK struct
+Public Const NM_DBLCLK               As Long = (NM_FIRST - 3)
+Public Const NM_RETURN               As Long = (NM_FIRST - 4)
+Public Const NM_RCLICK               As Long = (NM_FIRST - 5) 'uses NMCLICK struct
+Public Const NM_RDBLCLK              As Long = (NM_FIRST - 6)
+Public Const NM_SETFOCUS             As Long = (NM_FIRST - 7)
+Public Const NM_KILLFOCUS            As Long = (NM_FIRST - 8)
+Public Const NM_CUSTOMDRAW           As Long = (NM_FIRST - 12)
+Public Const NM_HOVER                As Long = (NM_FIRST - 13)
+Public Const NM_NCHITTEST            As Long = (NM_FIRST - 14)
+Public Const NM_KEYDOWN              As Long = (NM_FIRST - 15)
+Public Const NM_RELEASEDCAPTURE      As Long = (NM_FIRST - 16)
+Public Const NM_SETCURSOR            As Long = (NM_FIRST - 17)
+Public Const NM_CHAR                 As Long = (NM_FIRST - 18)
+Public Const NM_TOOLTIPSCREATED      As Long = (NM_FIRST - 19)
+Public Const NM_LDOWN                As Long = (NM_FIRST - 20)
+Public Const NM_RDOWN                As Long = (NM_FIRST - 21)
+Public Const NM_THEMECHANGED         As Long = (NM_FIRST - 22)
+Public Const NM_FONTCHANGED          As Long = (NM_FIRST - 23)
+Public Const NM_CUSTOMTEXT           As Long = (NM_FIRST - 24)   ' uses NMCUSTOMTEXT struct
+Public Const NM_TVSTATEIMAGECHANGING As Long = (NM_FIRST - 24)
+
+Public Type NMHDR
+  hWndFrom As LongPtr   ' Window handle of control sending message
+  idFrom As LongPtr      ' Identifier of control sending message
+  code  As Long          ' Specifies the notification code
+End Type
+
+Public Type NMMOUSE
+	hdr As NMHDR
+    dwItemSpec As LongPtr
+    dwItemData As LongPtr
+    pt As POINT
+    dwHitInfo As LongPtr
+End Type
+
+Public Type NMOBJECTNOTIFY
+	hdr As NMHDR
+    iItem As Long
+    piid As LongPtr
+    pObject As LongPtr
+    hResult As Long
+    dwFlags As Long
+End Type
+
+Public Type NMKEY
+	hdr As NMHDR
+    nVKey As Long
+    uFlags As Long
+End Type
+
+Public Type NMCHAR
+	hdr As NMHDR
+    ch As Long
+    dwItemPrev As Long
+    dwItemNext As Long
+End Type
+
+Public Type NMCUSTOMTEXT
+	hdr As NMHDR
+    hDC As LongPtr
+    lpString As LongPtr
+    nCount As Long
+    lpRect As LongPtr
+    uFormat As Long
+    fLink As Long
+End Type
+
+
+Public Type NMCUSTOMDRAW
+    hdr As NMHDR
+    dwDrawStage As Long
+    hDC As LongPtr
+    rc As RECT
+    dwItemSpec As LongPtr
+    uItemState As Long
+    lItemlParam As LongPtr
+End Type
+Public Type NMTTCUSTOMDRAW
+	nmcd As NMCUSTOMDRAW
+    uDrawFlags As Long
+End Type
+Public Type NMCUSTOMSPLITRECTINFO
+	hdr As NMHDR
+    rcClient As RECT
+    rcButton As RECT
+    rcSplit As RECT
+End Type
+
+Public Const CDRF_DODEFAULT As Long = &H0
+Public Const CDRF_NEWFONT As Long = &H2
+Public Const CDRF_SKIPDEFAULT As Long = &H4
+Public Const CDRF_DOERASE As Long = &H8
+Public Const CDRF_NOTIFYPOSTPAINT As Long = &H10
+Public Const CDRF_NOTIFYITEMDRAW As Long = &H20
+Public Const CDRF_NOTIFYSUBITEMDRAW As Long = &H20
+Public Const CDRF_NOTIFYPOSTERASE As Long = &H40
+
+Public Const CDDS_PREPAINT = &H1&
+Public Const CDDS_POSTPAINT = &H2&
+Public Const CDDS_PREERASE = &H3&
+Public Const CDDS_POSTERASE = &H4&
+Public Const CDDS_ITEM As Long = &H10000
+Public Const CDDS_ITEMPREPAINT As Long = CDDS_ITEM Or CDDS_PREPAINT
+Public Const CDDS_ITEMPOSTPAINT = CDDS_ITEM Or CDDS_POSTPAINT
+Public Const CDDS_ITEMPREERASE As Long = CDDS_ITEM Or CDDS_PREERASE
+Public Const CDDS_ITEMPOSTERASE = CDDS_ITEM Or CDDS_POSTERASE
+Public Const CDDS_SUBITEM = &H20000
+
+Public Const CDIS_SELECTED = &H1
+Public Const CDIS_GRAYED = &H2
+Public Const CDIS_DISABLED = &H4
+Public Const CDIS_CHECKED = &H8
+Public Const CDIS_FOCUS = &H10
+Public Const CDIS_DEFAULT = &H20
+Public Const CDIS_HOT = &H40
+Public Const CDIS_MARKED = &H80
+Public Const CDIS_INDETERMINATE = &H100
+Public Const CDIS_SHOWKEYBOARDCUES = &H200
+Public Const CDIS_NEARHOT = &H400
+Public Const CDIS_OTHERSIDEHOT = &H800
+Public Const CDIS_DROPHILITED = &H1000
+
+Public Enum DDL_Flags
+	DDL_READWRITE = &H0000
+	DDL_READONLY = &H0001
+	DDL_HIDDEN = &H0002
+	DDL_SYSTEM = &H0004
+	DDL_DIRECTORY = &H0010
+	DDL_ARCHIVE = &H0020
+	DDL_POSTMSGS = &H2000
+	DDL_DRIVES = &H4000
+	DDL_EXCLUSIVE = &H8000
+End Enum
+
+Public Enum MSGFs
+	MSGF_COMMCTRL_BEGINDRAG = &H4200
+	MSGF_COMMCTRL_SIZEHEADER = &H4201
+	MSGF_COMMCTRL_DRAGSELECT = &H4202
+	MSGF_COMMCTRL_TOOLBARCUST = &H4203
+End Enum
+
+Public Enum HIC_FLAGS
+    HICF_OTHER = &H0
+    HICF_MOUSE = &H1          ' Triggered by mouse
+    HICF_ARROWKEYS = &H2          ' Triggered by arrow keys
+    HICF_ACCELERATOR = &H4          ' Triggered by accelerator
+    HICF_DUPACCEL = &H8          ' This accelerator is not unique
+    HICF_ENTERING = &H10         ' idOld is invalid
+    HICF_LEAVING = &H20         ' idNew is invalid
+    HICF_RESELECT = &H40         ' hot item reselected
+    HICF_LMOUSE = &H80         ' left mouse button selected
+    HICF_TOGGLEDROPDOWN = &H100        ' Toggle button's dropdown state
+End Enum
+
+Public Function MAKELPARAM(wLow As Long, wHigh As Long) As LongPtr
+  MAKELPARAM = MakeLong(wLow, wHigh)
+End Function
+Public Function MakeLong(wLow As Long, wHigh As Long) As Long
+  MakeLong = LoWord(wLow) Or (&H10000 * LoWord(wHigh))
+End Function
+
+Public Function INDEXTOSTATEIMAGEMASK(ByVal Index As Long) As Long
+#If TWINBASIC Then
+INDEXTOSTATEIMAGEMASK = (Index << 12)
+#Else
+INDEXTOSTATEIMAGEMASK = Index * (2 ^ 12)	
+#End If
+End Function
+Public Function STATEIMAGEMASKTOINDEX(ByVal ImgState As Long) As Long
+#If TWINBASIC Then
+STATEIMAGEMASKTOINDEX = (ImgState >> 12)
+#Else
+STATEIMAGEMASKTOINDEX = ImgState / (2 ^ 12)	
+#End If
+End Function
+
+Public Function LoWord(ByVal DWord As Long) As Integer
+If DWord And &H8000& Then
+    LoWord = DWord Or &HFFFF0000
+Else
+    LoWord = DWord And &HFFFF&
+End If
+End Function
+Public Function HiWord(ByVal DWord As Long) As Integer
+HiWord = (DWord And &HFFFF0000) \ &H10000
+End Function
+End Module

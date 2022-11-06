@@ -1,0 +1,156 @@
+Module modScrollBar
+
+'REGULAR SCROLL BARS::
+Public Const WC_SCROLLBAR = "ScrollBar"
+
+Public Enum ScrollBarStyles
+	SBS_HORZ = &H0000
+	SBS_VERT = &H0001
+	SBS_TOPALIGN = &H0002
+	SBS_LEFTALIGN = &H0002
+	SBS_BOTTOMALIGN = &H0004
+	SBS_RIGHTALIGN = &H0004
+	SBS_SIZEBOXTOPLEFTALIGN = &H0002
+	SBS_SIZEBOXBOTTOMRIGHTALIGN = &H0004
+	SBS_SIZEBOX = &H0008
+	SBS_SIZEGRIP = &H0010
+End Enum
+
+Public Enum ScrollBarType
+    SB_HORZ = 0
+    SB_VERT = 1
+    SB_CTL = 2
+    SB_BOTH = 3
+End Enum
+
+Public Const SB_LINEUP  = 0
+Public Const SB_LINELEFT  = 0
+Public Const SB_LINEDOWN  = 1
+Public Const SB_LINERIGHT  = 1
+Public Const SB_PAGEUP  = 2
+Public Const SB_PAGELEFT  = 2
+Public Const SB_PAGEDOWN  = 3
+Public Const SB_PAGERIGHT  = 3
+Public Const SB_THUMBPOSITION  = 4
+Public Const SB_THUMBTRACK  = 5
+Public Const SB_TOP  = 6
+Public Const SB_LEFT  = 6
+Public Const SB_BOTTOM  = 7
+Public Const SB_RIGHT  = 7
+Public Const SB_ENDSCROLL  = 8
+
+Public Const SBM_SETPOS  = &H00E0 /*not in win3.1 */
+Public Const SBM_GETPOS  = &H00E1 /*not in win3.1 */
+Public Const SBM_SETRANGE  = &H00E2 /*not in win3.1 */
+Public Const SBM_SETRANGEREDRAW  = &H00E6 /*not in win3.1 */
+Public Const SBM_GETRANGE  = &H00E3 /*not in win3.1 */
+Public Const SBM_ENABLE_ARROWS  = &H00E4 /*not in win3.1 */
+Public Const SBM_SETSCROLLINFO  = &H00E9
+Public Const SBM_GETSCROLLINFO  = &H00EA
+Public Const SBM_GETSCROLLBARINFO  = &H00EB
+
+Public Const SIF_RANGE  = &H0001
+Public Const SIF_PAGE  = &H0002
+Public Const SIF_POS  = &H0004
+Public Const SIF_DISABLENOSCROLL  = &H0008
+Public Const SIF_TRACKPOS  = &H0010
+Public Const SIF_ALL  = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
+Public Const SIF_RETURNOLDPOS = &H1000 'UNDOCUMENTED
+Public Const SIF_NOSCROLL = &H2000 ' UNDOCUMENTED
+
+Public Type SCROLLINFO
+	cbSize As Long
+	fMask As Long
+	nMin As Long
+	nMax As Long
+	nPage As Long
+	nPos As Long
+	nTrackPos As Long
+End Type
+
+Public Enum ESB_Flags
+	ESB_ENABLE_BOTH = &H0000
+	ESB_DISABLE_BOTH = &H0003
+	ESB_DISABLE_LEFT = &H0001
+	ESB_DISABLE_RIGHT = &H0002
+	ESB_DISABLE_UP = &H0001
+	ESB_DISABLE_DOWN = &H0002
+	ESB_DISABLE_LTUP = ESB_DISABLE_LEFT
+	ESB_DISABLE_RTDN = ESB_DISABLE_RIGHT
+End Enum
+
+Public Enum SWEx_Flags
+	SW_SCROLLCHILDREN = &H0001 /* Scroll children within *lprcScroll. */
+	SW_INVALIDATE = &H0002 /* Invalidate after scrolling */
+	SW_ERASE = &H0004 /* If SW_INVALIDATE, don't send WM_ERASEBACKGROUND */
+	SW_SMOOTHSCROLL = &H0010 /* Use smooth scrolling */
+End Enum
+
+Public Const CCHILDREN_SCROLLBAR = 5
+Public Type SCROLLBARINFO
+	cbSize As Long
+	rcScrollBar As RECT
+	dxyLineButton As Long
+	xyThumbTop As Long
+	xyThumbBottom As Long
+	reserved As Long
+	rgstate(CCHILDREN_SCROLLBAR) As Long
+End Type
+
+Public Enum SBObjId
+	OBJID_VSCROLL = (&HFFFFFFFB)
+	OBJID_HSCROLL = (&HFFFFFFFA)
+End Enum
+
+Public Declare PtrSafe Function GetScrollBarInfo Lib "user32" (ByVal hWnd As LongPtr, ByVal idObject As SBObjId, ByRef psbi As SCROLLBARINFO) As Long
+Public Declare PtrSafe Function GetScrollInfo Lib "user32" (ByVal hWnd As LongPtr, ByVal wBar As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+Public Declare PtrSafe Function SetScrollInfo Lib "user32" (ByVal hWnd As LongPtr, ByVal wBar As Long, ByRef lpScrollInfo As SCROLLINFO, ByVal fRedraw As Long) As Long
+Public Declare PtrSafe Function EnableScrollBar Lib "user32" (ByVal hWnd As LongPtr, ByVal wSBFlags As ScrollBarType, ByVal wArrows As ESB_Flags) As Long
+Public Declare PtrSafe Function ShowScrollBar Lib "user32" (ByVal hWnd As LongPtr, ByVal wBar As ScrollBarType, ByVal bShow As Long) As Long
+Public Declare PtrSafe Function GetScrollRange Lib "user32" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType, lpMinPos As Long, lpMaxPos As Long) As Long
+Public Declare PtrSafe Function SetScrollRange Lib "user32" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType, ByVal nMinPos As Long, ByVal nMaxPos As Long, ByVal fRedraw As Long) As Long
+Public Declare PtrSafe Function GetScrollPos Lib "user32" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType) As Long
+Public Declare PtrSafe Function SetScrollPos Lib "user32" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType, ByVal nPos As Long, ByVal fRedraw As Long) As Long
+Public Declare PtrSafe Function ScrollWindow Lib "user32" (ByVal hWnd As LongPtr, ByVal XAmount As Long, ByVal YAmount As Long, lpRect As RECT, lpClipRect As RECT) As Long
+Public Declare PtrSafe Function ScrollWindowEx Lib "user32" (ByVal hWnd As LongPtr, ByVal dx As Long, ByVal dy As Long, lprcScroll As RECT, lprcClip As RECT, ByVal hrgnUpdate As LongPtr, lprcUpdate As RECT, ByVal uFlags As SWEx_Flags) As Long
+Public Declare PtrSafe Function ScrollDC Lib "user32" (ByVal hDC As LongPtr, ByVal dx As Long, ByVal dy As Long, lprcScroll As RECT, lprcClip As RECT, ByVal hrgnUpdate As LongPtr, lprcUpdate As RECT) As Long
+
+
+
+'FLAT SCROLL BARS
+Public Enum FlatScrollBarProps
+	WSB_PROP_CYVSCROLL = &H00000001
+	WSB_PROP_CXHSCROLL = &H00000002
+	WSB_PROP_CYHSCROLL = &H00000004
+	WSB_PROP_CXVSCROLL = &H00000008
+	WSB_PROP_CXHTHUMB = &H00000010
+	WSB_PROP_CYVTHUMB = &H00000020
+	WSB_PROP_VBKGCOLOR = &H00000040
+	WSB_PROP_HBKGCOLOR = &H00000080
+	WSB_PROP_VSTYLE = &H00000100
+	WSB_PROP_HSTYLE = &H00000200
+	WSB_PROP_WINSTYLE = &H00000400
+	WSB_PROP_PALETTE = &H00000800
+	WSB_PROP_MASK = &H00000FFF
+End Enum
+
+Public Enum FlatScrollBarModes
+	FSB_FLAT_MODE = 2
+	FSB_ENCARTA_MODE = 1
+	FSB_REGULAR_MODE = 0
+End Enum
+
+Public Declare PtrSafe Function FlatSB_EnableScrollBar Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal wSBFlags As ScrollBarType, ByVal wArrows As Long) As Long
+Public Declare PtrSafe Function FlatSB_ShowScrollBar Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal wSBFlags As ScrollBarType, ByVal fShow As Long) As Long
+Public Declare PtrSafe Function FlatSB_GetScrollRange Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType, ByRef lpMinPos As Long, ByRef lpMaxPos As Long) As Long
+Public Declare PtrSafe Function FlatSB_GetScrollInfo Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal fnbar As ScrollBarType, ByRef lpsi As SCROLLINFO) As Long
+Public Declare PtrSafe Function FlatSB_GetScrollPos Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType) As Long
+Public Declare PtrSafe Function FlatSB_GetScrollProp Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal propIndex As FlatScrollBarProps, ByRef Value As LongPtr) As Long
+Public Declare PtrSafe Function FlatSB_SetScrollPos Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType, ByVal pos As Long, ByVal fRedraw As Long) As Long
+Public Declare PtrSafe Function FlatSB_SetScrollInfo Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType, ByRef psi As SCROLLINFO, ByVal fRedraw As Long) As Long
+Public Declare PtrSafe Function FlatSB_SetScrollRange Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal nBar As ScrollBarType, ByVal min As Long, ByVal max As Long, ByVal fRedraw As Long) As Long
+Public Declare PtrSafe Function FlatSB_SetScrollProp Lib "comctl32.dll" (ByVal hWnd As LongPtr, ByVal index As FlatScrollBarProps, ByVal newValue As LongPtr, ByVal fRedraw As Long) As Long
+Public Declare PtrSafe Function InitializeFlatSB Lib "comctl32.dll" (ByVal hWnd As LongPtr) As Long
+Public Declare PtrSafe Function UninitializeFlatSB Lib "comctl32.dll" (ByVal hWnd As LongPtr) As Long
+
+End Module

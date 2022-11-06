@@ -1,0 +1,146 @@
+Module modTabControl
+
+Public Const WC_TABCONTROL = "SysTabControl32"
+
+Public Const TCM_FIRST = &H1300                   '// Tab control messages
+Public Const TCN_FIRST = H_MAX - 550
+Public Enum TabItemFlags
+    TCIF_TEXT = &H1
+    TCIF_IMAGE = &H2
+    TCIF_RTLREADING = &H4
+    TCIF_PARAM = &H8
+    TCIF_STATE = &H10
+End Enum '
+Public Enum TabExStyles
+	'  EX styles for use with TCM_SETEXTENDEDSTYLE
+	TCS_EX_FLATSEPARATORS = &H00000001
+	TCS_EX_REGISTERDROP = &H00000002
+End Enum
+Public Type TCITEM
+    Mask        As TabItemFlags
+    dwState     As TabItemState
+    dwStateMask As TabItemState
+    pszText     As LongPtr
+    cchTextMax  As Long
+    iImage      As Long
+    lParam      As LongPtr
+End Type
+Public Type TCITEMA
+    Mask        As TabItemFlags
+    dwState     As TabItemState
+    dwStateMask As TabItemState
+    pszText     As String
+    cchTextMax  As Long
+    iImage      As Long
+    lParam      As LongPtr
+End Type
+Public Enum TabStyles
+	TCS_SCROLLOPPOSITE = &H0001 ' assumes multiline tab
+	TCS_BOTTOM = &H0002
+	TCS_RIGHT = &H0002
+	TCS_MULTISELECT = &H0004 ' allow multi-select in button mode
+	TCS_FLATBUTTONS = &H0008
+	TCS_FORCEICONLEFT = &H0010
+	TCS_FORCELABELLEFT = &H0020
+	TCS_HOTTRACK = &H0040
+	TCS_VERTICAL = &H0080
+	TCS_TABS = &H0000
+	TCS_BUTTONS = &H0100
+	TCS_SINGLELINE = &H0000
+	TCS_MULTILINE = &H0200
+	TCS_RIGHTJUSTIFY = &H0000
+	TCS_FIXEDWIDTH = &H0400
+	TCS_RAGGEDRIGHT = &H0800
+	TCS_FOCUSONBUTTONDOWN = &H1000
+	TCS_OWNERDRAWFIXED = &H2000
+	TCS_TOOLTIPS = &H4000
+	TCS_FOCUSNEVER = &H8000
+End Enum
+
+Public Enum TabItemState
+	TCIS_BUTTONPRESSED = &H0001
+	TCIS_HIGHLIGHTED = &H0002
+    TCIS_HIDDEN = &H0004 'UNDOCUMENTED
+End Enum
+
+Public Type TCITEMHEADER
+    Mask As TabItemFlags
+    lpReserved1 As Long
+    lpReserved2 As Long
+    pszText As LongPtr
+    cchTextMax As Long
+    iImage As Long
+End Type
+Public Type TCITEMHEADERA
+    Mask As TabItemFlags
+    lpReserved1 As Long
+    lpReserved2 As Long
+    pszText As String
+    cchTextMax As Long
+    iImage As Long
+End Type
+
+Public Const TCM_GETBKCOLOR = (TCM_FIRST + 0) 'UNDOCUMENTED
+Public Const TCM_SETBKCOLOR = (TCM_FIRST + 1) 'UNDOCUMENTED
+Public Const TCM_GETIMAGELIST = (TCM_FIRST + 2)
+Public Const TCM_SETIMAGELIST = (TCM_FIRST + 3)
+Public Const TCM_GETITEMCOUNT = (TCM_FIRST + 4)
+Public Const TCM_GETITEMA = (TCM_FIRST + 5)
+Public Const TCM_GETITEMW = (TCM_FIRST + 60)
+Public Const TCM_GETITEM = TCM_GETITEMA
+Public Const TCM_SETITEMA = (TCM_FIRST + 6)
+Public Const TCM_SETITEMW = (TCM_FIRST + 61)
+Public Const TCM_SETITEM = TCM_SETITEMA
+Public Const TCM_INSERTITEMA = (TCM_FIRST + 7)
+Public Const TCM_INSERTITEMW = (TCM_FIRST + 62)
+Public Const TCM_INSERTITEM = TCM_INSERTITEMA
+Public Const TCM_DELETEITEM = (TCM_FIRST + 8)
+Public Const TCM_DELETEALLITEMS = (TCM_FIRST + 9)
+Public Const TCM_GETITEMRECT = (TCM_FIRST + 10)
+Public Const TCM_GETCURSEL = (TCM_FIRST + 11)
+Public Const TCM_SETCURSEL = (TCM_FIRST + 12)
+Public Const TCM_HITTEST = (TCM_FIRST + 13)
+Public Const TCM_SETITEMEXTRA = (TCM_FIRST + 14)
+Public Const TCM_ADJUSTRECT = (TCM_FIRST + 40)
+Public Const TCM_SETITEMSIZE = (TCM_FIRST + 41)
+Public Const TCM_REMOVEIMAGE = (TCM_FIRST + 42)
+Public Const TCM_SETPADDING = (TCM_FIRST + 43)
+Public Const TCM_GETROWCOUNT = (TCM_FIRST + 44)
+Public Const TCM_GETTOOLTIPS = (TCM_FIRST + 45)
+Public Const TCM_SETTOOLTIPS = (TCM_FIRST + 46)
+Public Const TCM_GETCURFOCUS = (TCM_FIRST + 47)
+Public Const TCM_SETCURFOCUS = (TCM_FIRST + 48)
+Public Const TCM_SETMINTABWIDTH = (TCM_FIRST + 49)
+Public Const TCM_DESELECTALL = (TCM_FIRST + 50)
+Public Const TCM_HIGHLIGHTITEM = (TCM_FIRST + 51)
+Public Const TCM_SETEXTENDEDSTYLE = (TCM_FIRST + 52)    ' // optional wParam
+Public Const TCM_GETEXTENDEDSTYLE = (TCM_FIRST + 53)
+Public Const TCM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT
+Public Const TCM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT
+
+Public Enum TabHitTestFlags
+	TCHT_NOWHERE = &H0001
+	TCHT_ONITEMICON = &H0002
+	TCHT_ONITEMLABEL = &H0004
+	TCHT_ONITEM = (TCHT_ONITEMICON Or TCHT_ONITEMLABEL)
+End Enum
+
+Public Type TCHITTESTINFO
+    PT As POINT
+    Flags As TabHitTestFlags
+End Type
+
+Public Const TCN_KEYDOWN = (TCN_FIRST - 0)
+Public Const TCN_SELCHANGE = (TCN_FIRST - 1)
+Public Const TCN_SELCHANGING = (TCN_FIRST - 2)
+Public Const TCN_GETOBJECT = (TCN_FIRST - 3)
+Public Const TCN_FOCUSCHANGE = (TCN_FIRST - 4)
+[ PackingAlignment (1) ]
+Public Type TCKEYDOWN
+    hdr As NMHDR
+    wVKey As Long
+    Flags As Long
+End Type
+
+
+End Module

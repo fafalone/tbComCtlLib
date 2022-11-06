@@ -1,0 +1,179 @@
+Module modTooltip
+
+Public Const TOOLTIPS_CLASS = "tooltips_class32"
+
+Public Const TTM_ACTIVATE  = (WM_USER + 1)
+Public Const TTM_SETDELAYTIME  = (WM_USER + 3)
+Public Const TTM_ADDTOOLA  = (WM_USER + 4)
+Public Const TTM_ADDTOOLW  = (WM_USER + 50)
+Public Const TTM_DELTOOLA  = (WM_USER + 5)
+Public Const TTM_DELTOOLW  = (WM_USER + 51)
+Public Const TTM_NEWTOOLRECTA  = (WM_USER + 6)
+Public Const TTM_NEWTOOLRECTW  = (WM_USER + 52)
+Public Const TTM_RELAYEVENT  = (WM_USER + 7)  ' Win7: wParam = GetMessageExtraInfo() when relaying WM_MOUSEMOVE
+Public Const TTM_GETTOOLINFOA  = (WM_USER + 8)
+Public Const TTM_GETTOOLINFOW  = (WM_USER + 53)
+Public Const TTM_SETTOOLINFOA  = (WM_USER + 9)
+Public Const TTM_SETTOOLINFOW  = (WM_USER + 54)
+Public Const TTM_HITTESTA  = (WM_USER + 10)
+Public Const TTM_HITTESTW  = (WM_USER + 55)
+Public Const TTM_GETTEXTA  = (WM_USER + 11)
+Public Const TTM_GETTEXTW  = (WM_USER + 56)
+Public Const TTM_UPDATETIPTEXTA  = (WM_USER + 12)
+Public Const TTM_UPDATETIPTEXTW  = (WM_USER + 57)
+Public Const TTM_GETTOOLCOUNT  = (WM_USER + 13)
+Public Const TTM_ENUMTOOLSA  = (WM_USER + 14)
+Public Const TTM_ENUMTOOLSW  = (WM_USER + 58)
+Public Const TTM_GETCURRENTTOOLA  = (WM_USER + 15)
+Public Const TTM_GETCURRENTTOOLW  = (WM_USER + 59)
+Public Const TTM_WINDOWFROMPOINT  = (WM_USER + 16)
+Public Const TTM_TRACKACTIVATE  = (WM_USER + 17)  ' wParam = TRUE/FALSE start end  lparam = LPTOOLINFO
+Public Const TTM_TRACKPOSITION  = (WM_USER + 18)  ' lParam = dwPos
+Public Const TTM_SETTIPBKCOLOR  = (WM_USER + 19)
+Public Const TTM_SETTIPTEXTCOLOR  = (WM_USER + 20)
+Public Const TTM_GETDELAYTIME  = (WM_USER + 21)
+Public Const TTM_GETTIPBKCOLOR  = (WM_USER + 22)
+Public Const TTM_GETTIPTEXTCOLOR  = (WM_USER + 23)
+Public Const TTM_SETMAXTIPWIDTH  = (WM_USER + 24)
+Public Const TTM_GETMAXTIPWIDTH  = (WM_USER + 25)
+Public Const TTM_SETMARGIN  = (WM_USER + 26)  ' lParam = lprc
+Public Const TTM_GETMARGIN  = (WM_USER + 27)  ' lParam = lprc
+Public Const TTM_POP  = (WM_USER + 28)
+Public Const TTM_UPDATE  = (WM_USER + 29)
+Public Const TTM_GETBUBBLESIZE  = (WM_USER + 30)
+Public Const TTM_ADJUSTRECT  = (WM_USER + 31)
+Public Const TTM_SETTITLEA  = (WM_USER + 32)  ' wParam = TTI_*, lParam = char* szTitle
+Public Const TTM_SETTITLEW  = (WM_USER + 33)  ' wParam = TTI_*, lParam = wchar* szTitle
+Public Const TTM_POPUP  = (WM_USER + 34)
+Public Const TTM_GETTITLE  = (WM_USER + 35)  ' wParam = 0, lParam = TTGETTITLE*
+Public Const TTM_ADDTOOL  = TTM_ADDTOOLW
+Public Const TTM_DELTOOL  = TTM_DELTOOLW
+Public Const TTM_NEWTOOLRECT  = TTM_NEWTOOLRECTW
+Public Const TTM_GETTOOLINFO  = TTM_GETTOOLINFOW
+Public Const TTM_SETTOOLINFO  = TTM_SETTOOLINFOW
+Public Const TTM_HITTEST  = TTM_HITTESTW
+Public Const TTM_GETTEXT  = TTM_GETTEXTW
+Public Const TTM_UPDATETIPTEXT  = TTM_UPDATETIPTEXTW
+Public Const TTM_ENUMTOOLS  = TTM_ENUMTOOLSW
+Public Const TTM_GETCURRENTTOOL  = TTM_GETCURRENTTOOLW
+Public Const TTM_SETTITLE  = TTM_SETTITLEW
+Public Const TTM_SETWINDOWTHEME = CCM_SETWINDOWTHEME
+
+Public Const TTN_FIRST As Long = (-520)
+Public Const TTN_GETDISPINFOA  = (TTN_FIRST - 0)
+Public Const TTN_GETDISPINFOW  = (TTN_FIRST - 10)
+Public Const TTN_SHOW  = (TTN_FIRST - 1)
+Public Const TTN_POP  = (TTN_FIRST - 2)
+Public Const TTN_LINKCLICK  = (TTN_FIRST - 3)
+Public Const TTN_NEEDTEXT  = TTN_GETDISPINFOW
+Public Const TTN_NEEDTEXTA  = TTN_GETDISPINFOA
+Public Const TTN_NEEDTEXTW  = TTN_GETDISPINFOW
+
+Public Enum Tooltip_Styles
+	TTS_ALWAYSTIP = &H01
+	TTS_NOPREFIX = &H02
+	TTS_NOANIMATE = &H10
+	TTS_NOFADE = &H20
+	TTS_BALLOON = &H40
+	TTS_CLOSE = &H80
+	TTS_USEVISUALSTYLE = &H100
+End Enum
+
+Public Enum Tooltip_Flags
+	TTF_IDISHWND = &H0001
+	'  Use this to center around trackpoint in trackmode
+	'  -OR- to center around tool in normal mode.
+	'  Use TTF_ABSOLUTE to place the tip exactly at the track coords when
+	'  in tracking mode.  TTF_ABSOLUTE can be used in conjunction with TTF_CENTERTIP
+	'  to center the tip absolutely about the track point.
+	TTF_CENTERTIP = &H0002
+	TTF_RTLREADING = &H0004
+	TTF_SUBCLASS = &H0010
+	TTF_TRACK = &H0020
+	TTF_ABSOLUTE = &H0080
+	TTF_TRANSPARENT = &H0100
+	TTF_DI_SETITEM = &H8000 ' valid only on the TTN_NEEDTEXT callback
+End Enum
+
+Public Enum Tooltip_DelayTimeFlags
+	TTDT_AUTOMATIC = 0
+	TTDT_RESHOW = 1
+	TTDT_AUTOPOP = 2
+	TTDT_INITIAL = 3
+End Enum
+
+Public Enum Tooltip_Icon
+	TTI_NONE = 0
+	TTI_INFO = 1
+	TTI_WARNING = 2
+	TTI_ERROR = 3
+	TTI_INFO_LARGE = 4
+	TTI_WARNING_LARGE = 5
+	TTI_ERROR_LARGE = 6
+End Enum
+
+
+Public Type TOOLINFO
+	cbSize As Long
+	uFlags As Tooltip_Flags
+	hwnd As LongPtr
+	uId As LongPtr
+	rect As RECT
+	hinst As LongPtr
+	lpszText As LongPtr
+	lParam As LongPtr
+	lpReserved As LongPtr
+End Type
+Public Type TOOLINFOA
+	cbSize As Long
+	uFlags As Tooltip_Flags
+	hwnd As LongPtr
+	uId As LongPtr
+	rect As RECT
+	hinst As LongPtr
+	lpszText As String
+	lParam As LongPtr
+	lpReserved As LongPtr
+End Type
+
+Public Type TTGETTITLE
+	dwSize As Long
+	uTitleBitmap As Long
+	cch As Long
+	pszTitle As LongPtr
+End Type
+
+Public Type TT_HITTESTINFO
+	hwnd As LongPtr
+	pt As POINT
+	ti As TOOLINFO
+End Type
+Public Type TT_HITTESTINFOA
+	hwnd As LongPtr
+	pt As POINT
+	ti As TOOLINFOA
+End Type
+
+Public Type NMTTDISPINFOW
+	hdr As NMHDR
+	lpszText As LongPtr
+	szText(0 To 79) As Integer
+	hinst As LongPtr
+	uFlags As Tooltip_Flags
+	lParam As LongPtr
+End Type
+Public Type NMTTDISPINFOA
+	hdr As NMHDR
+	lpszText As String
+	szText(0 To 79) As Byte
+	hinst As LongPtr
+	uFlags As Tooltip_Flags
+	lParam As LongPtr
+End Type
+
+Public Type NMTTCUSTOMDRAW
+	nmcd As NMCUSTOMDRAW
+	uDrawFlags As DT_Flags
+End Type
+
+End Module

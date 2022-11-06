@@ -1,0 +1,159 @@
+Module modMonthCal
+
+Public Const MONTHCAL_CLASS= "SysMonthCal32"
+
+Public Const MCM_FIRST As Long = &H1000
+Public Const MCM_GETCURSEL As Long = (MCM_FIRST + 1)
+Public Const MCM_SETCURSEL As Long = (MCM_FIRST + 2)
+Public Const MCM_GETMAXSELCOUNT As Long = (MCM_FIRST + 3)
+Public Const MCM_SETMAXSELCOUNT As Long = (MCM_FIRST + 4)
+Public Const MCM_GETSELRANGE As Long = (MCM_FIRST + 5)
+Public Const MCM_SETSELRANGE As Long = (MCM_FIRST + 6)
+Public Const MCM_GETMONTHRANGE As Long = (MCM_FIRST + 7)
+Public Const MCM_SETDAYSTATE As Long = (MCM_FIRST + 8)
+Public Const MCM_GETMINREQRECT As Long = (MCM_FIRST + 9)
+Public Const MCM_SETCOLOR As Long = (MCM_FIRST + 10)
+Public Const MCM_GETCOLOR As Long = (MCM_FIRST + 11)
+Public Const MCM_SETTODAY As Long = (MCM_FIRST + 12)
+Public Const MCM_GETTODAY As Long = (MCM_FIRST + 13)
+Public Const MCM_HITTEST As Long = (MCM_FIRST + 14)
+Public Const MCM_SETFIRSTDAYOFWEEK As Long = (MCM_FIRST + 15)
+Public Const MCM_GETFIRSTDAYOFWEEK As Long = (MCM_FIRST + 16)
+Public Const MCM_GETRANGE As Long = (MCM_FIRST + 17)
+Public Const MCM_SETRANGE As Long = (MCM_FIRST + 18)
+Public Const MCM_GETMONTHDELTA As Long = (MCM_FIRST + 19)
+Public Const MCM_SETMONTHDELTA As Long = (MCM_FIRST + 20)
+Public Const MCM_GETMAXTODAYWIDTH As Long = (MCM_FIRST + 21)
+Public Const MCM_GETCURRENTVIEW As Long = (MCM_FIRST + 22)
+Public Const MCM_GETCALENDARCOUNT As Long = (MCM_FIRST + 23)
+Public Const MCM_GETCALENDARGRIDINFO As Long = (MCM_FIRST + 24)
+Public Const MCM_GETCALID As Long = (MCM_FIRST + 27)
+Public Const MCM_SETCALID As Long = (MCM_FIRST + 28)
+Public Const MCM_SIZERECTTOMIN As Long = (MCM_FIRST + 29)
+Public Const MCM_SETCALENDARBORDER As Long = (MCM_FIRST + 30)
+Public Const MCM_GETCALENDARBORDER As Long = (MCM_FIRST + 31)
+Public Const MCM_SETCURRENTVIEW As Long = (MCM_FIRST + 32)
+Public Const MCM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT
+Public Const MCM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT
+
+Public Const MCN_FIRST As Long = (-750)
+Public Const MCN_VIEWCHANGE As Long = (MCN_FIRST)
+Public Const MCN_SELCHANGE As Long = (MCN_FIRST + 1)
+Public Const MCN_GETDAYSTATE As Long = (MCN_FIRST + 3)
+Public Const MCN_SELECT As Long = (MCN_FIRST + 4)
+
+Public Const GMR_VISIBLE  = 0  ' visible portion of display
+Public Const GMR_DAYSTATE  = 1  ' above plus the grayed out parts of
+'  partially displayed months
+
+Public Enum MonthViewStyles
+	MCS_DAYSTATE = &H0001
+	MCS_MULTISELECT = &H0002
+	MCS_WEEKNUMBERS = &H0004
+	MCS_NOTODAYCIRCLE = &H0008
+	MCS_NOTODAY = &H0010
+	MCS_NOTRAILINGDATES = &H0040
+	MCS_SHORTDAYSOFWEEK = &H0080
+	MCS_NOSELCHANGEONNAV = &H0100
+End Enum
+
+Public Enum MCSC_Flags
+	MCSC_BACKGROUND = 0 ' the background color (between months)
+	MCSC_TEXT = 1 ' the dates
+	MCSC_TITLEBK = 2 ' background of the title
+	MCSC_TITLETEXT = 3
+	MCSC_MONTHBK = 4 ' background within the month cal
+	MCSC_TRAILINGTEXT = 5 ' the text color of header & trailing days
+    MCSC_COLORCOUNT = 6 'UNDOCUMENTED
+End Enum
+
+Public Enum MonthCalView
+	MCMV_MONTH = 0
+	MCMV_YEAR = 1
+	MCMV_DECADE = 2
+	MCMV_CENTURY = 3
+	MCMV_MAX = 3
+End Enum
+
+Public Enum MonthCalGridInfoPart
+	MCGIP_CALENDARCONTROL = 0
+	MCGIP_NEXT = 1
+	MCGIP_PREV = 2
+	MCGIP_FOOTER = 3
+	MCGIP_CALENDAR = 4
+	MCGIP_CALENDARHEADER = 5
+	MCGIP_CALENDARBODY = 6
+	MCGIP_CALENDARROW = 7
+	MCGIP_CALENDARCELL = 8
+End Enum
+
+Public Enum MonthCalGridInfoFlags
+	MCGIF_DATE = &H00000001
+	MCGIF_RECT = &H00000002
+	MCGIF_NAME = &H00000004
+End Enum
+
+Public Type MCGRIDINFO
+	cbSize As LONG
+	dwPart As MonthCalGridInfoPart
+	dwFlags As MonthCalGridInfoFlags
+	iCalendar As Long
+	iRow As Long
+	iCol As Long
+	bSelected As Long
+	stStart As SYSTEMTIME
+	stEnd As SYSTEMTIME
+	rc As RECT
+	pszName As LongPtr
+	cchName As LongPtr
+End Type
+
+Public Enum MCHT_Flags
+	MCHT_TITLE = &H00010000
+	MCHT_CALENDAR = &H00020000
+	MCHT_TODAYLINK = &H00030000
+	MCHT_NEXT = &H01000000 ' these indicate that hitting
+	MCHT_PREV = &H02000000 ' here will go to the next/prev month
+	MCHT_NOWHERE = &H00000000
+	MCHT_TITLEBK = (MCHT_TITLE)
+	MCHT_TITLEMONTH = (MCHT_TITLE Or &H0001)
+	MCHT_TITLEYEAR = (MCHT_TITLE Or &H0002)
+	MCHT_TITLEBTNNEXT = (MCHT_TITLE Or MCHT_NEXT Or &H0003)
+	MCHT_TITLEBTNPREV = (MCHT_TITLE Or MCHT_PREV Or &H0003)
+	MCHT_CALENDARBK = (MCHT_CALENDAR)
+	MCHT_CALENDARDATE = (MCHT_CALENDAR Or &H0001)
+	MCHT_CALENDARDATENEXT = (MCHT_CALENDARDATE Or MCHT_NEXT)
+	MCHT_CALENDARDATEPREV = (MCHT_CALENDARDATE Or MCHT_PREV)
+	MCHT_CALENDARDAY = (MCHT_CALENDAR Or &H0002)
+	MCHT_CALENDARWEEKNUM = (MCHT_CALENDAR Or &H0003)
+	MCHT_CALENDARCONTROL = &H00100000
+	MCHT_CALENDARDATEMIN = (MCHT_CALENDAR Or &H0004)
+	MCHT_CALENDARDATEMAX = (MCHT_CALENDAR Or &H0005)
+End Enum
+Public Type MCHITTESTINFO
+	cbSize As LONG
+	pt As POINT
+	uHit As MCHT_Flags ' out param
+	st As SYSTEMTIME
+	rc As RECT
+	iOffset As LONG
+	iRow As LONG
+	iCol As LONG
+End Type
+
+Public Type NMSELCHANGE
+	nmhdr As NMHDR ' this must be first, so we don't break WM_NOTIFY
+	stSelStart As SYSTEMTIME
+	stSelEnd As SYSTEMTIME
+End Type
+
+Public Type NMDAYSTATE
+	nmhdr As NMHDR ' this must be first, so we don't break WM_NOTIFY
+	stStart As SYSTEMTIME
+	cDayState As Long
+	prgDayState As LongPtr ' points to cDayState MONTHDAYSTATEs
+End Type
+
+
+
+End Module

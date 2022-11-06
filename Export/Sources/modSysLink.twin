@@ -1,0 +1,57 @@
+Module modSysLink
+
+Public Const WC_LINK = "SysLink"
+
+Public Const MAX_LINKID_TEXT = 48
+Public Const INVALID_LINK_INDEX As Long = (-1)
+Public Const L_MAX_URL_LENGTH = 2048 + 32 + 6
+
+Public Const LM_HITTEST  = (WM_USER + &H300)  ' wParam: n/a, lparam: PLHITTESTINFO, ret: BOOL
+Public Const LM_GETIDEALHEIGHT  = (WM_USER + &H301)  ' wParam: cxMaxWidth, lparam: n/a, ret: cy
+Public Const LM_SETITEM  = (WM_USER + &H302)  ' wParam: n/a, lparam: LITEM*, ret: BOOL
+Public Const LM_GETITEM  = (WM_USER + &H303)  ' wParam: n/a, lparam: LITEM*, ret: BOOL
+Public Const LM_GETIDEALSIZE  = (LM_GETIDEALHEIGHT)  ' wParam: cxMaxWidth, lparam: SIZE*, ret: cy
+
+
+Public Enum LITEM_Mask
+    LIF_ITEMINDEX = &H1
+    LIF_STATE = &H2
+    LIF_URL = &H8
+    LIF_ITEMID = &H4
+End Enum
+Public Enum LITEM_State
+    LIS_FOCUSED = &H1
+    LIS_ENABLED = &H2
+    LIS_VISITED = &H4
+    LIS_HOTTRACK = &H8
+    LIS_DEFAULTCOLORS = &H10
+End Enum
+Public Type LITEM
+    Mask As LITEM_Mask
+    iLink As Long
+    State As LITEM_State
+    StateMask As LITEM_State
+    szID(0 To ((MAX_LINKID_TEXT) - 1)) As Integer
+    szURL(0 To ((L_MAX_URL_LENGTH) - 1)) As Integer
+End Type
+
+Public Enum SysLinkStyles
+	LWS_TRANSPARENT = &H0001
+	LWS_IGNORERETURN = &H0002
+	LWS_NOPREFIX = &H0004
+	LWS_USEVISUALSTYLE = &H0008
+	LWS_USECUSTOMTEXT = &H0010
+	LWS_RIGHT = &H0020
+End Enum
+
+Public Type LHITTESTINFO
+	pt As POINT
+	item As LITEM
+End Type
+
+Public Type NMLINK
+	hdr As NMHDR
+	item As LITEM
+End Type
+
+End Module

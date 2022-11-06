@@ -1,0 +1,30 @@
+Module modHotKey
+
+Public Const HOTKEY_CLASS = "msctls_hotkey32"
+
+Public Enum HotKeyFlags
+	HOTKEYF_SHIFT = &H01
+	HOTKEYF_CONTROL = &H02
+	HOTKEYF_ALT = &H04
+	HOTKEYF_EXT = &H08
+End Enum
+
+Public Enum HotKeyRulesCombinations
+	HKCOMB_NONE = &H0001
+	HKCOMB_S = &H0002
+	HKCOMB_C = &H0004
+	HKCOMB_A = &H0008
+	HKCOMB_SC = &H0010
+	HKCOMB_SA = &H0020
+	HKCOMB_CA = &H0040
+	HKCOMB_SCA = &H0080
+End Enum
+
+Public Enum HotKeyMessages
+	HKM_SETHOTKEY = (WM_USER + 1)
+	HKM_GETHOTKEY = (WM_USER + 2)
+	HKM_SETRULES = (WM_USER + 3)
+End Enum
+
+
+End Module

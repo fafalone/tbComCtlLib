@@ -1,0 +1,90 @@
+Module modPager
+
+Public Const WC_PAGESCROLLER = "SysPager"
+
+Public Enum PagerStyles
+	PGS_VERT = &H0000
+	PGS_HORZ = &H0001
+	PGS_AUTOSCROLL = &H00000002
+	PGS_DRAGNDROP = &H00000004
+End Enum
+
+Public Enum PagerButtonStates
+	PGF_INVISIBLE = 0 ' Scroll button is not visible
+	PGF_NORMAL = 1 ' Scroll button is in normal state
+	PGF_GRAYED = 2 ' Scroll button is in grayed state
+	PGF_DEPRESSED = 4 ' Scroll button is in depressed state
+	PGF_HOT = 8 ' Scroll button is in hot state
+End Enum
+
+Public Enum PagerButton
+	PGB_TOPORLEFT = 0
+	PGB_BOTTOMORRIGHT = 1
+End Enum
+
+Public Const PGM_FIRST As Long = &H1400
+Public Const PGM_SETCHILD As Long = (PGM_FIRST + 1)
+Public Const PGM_RECALCSIZE As Long = (PGM_FIRST + 2)
+Public Const PGM_FORWARDMOUSE As Long = (PGM_FIRST + 3)
+Public Const PGM_SETBKCOLOR As Long = (PGM_FIRST + 4)
+Public Const PGM_GETBKCOLOR As Long = (PGM_FIRST + 5)
+Public Const PGM_SETBORDER As Long = (PGM_FIRST + 6)
+Public Const PGM_GETBORDER As Long = (PGM_FIRST + 7)
+Public Const PGM_SETPOS As Long = (PGM_FIRST + 8)
+Public Const PGM_GETPOS As Long = (PGM_FIRST + 9)
+Public Const PGM_SETBUTTONSIZE As Long = (PGM_FIRST + 10)
+Public Const PGM_GETBUTTONSIZE As Long = (PGM_FIRST + 11)
+Public Const PGM_GETBUTTONSTATE As Long = (PGM_FIRST + 12)
+Public Const PGM_SETSCROLLINFO As Long = (PGM_FIRST + 13)
+
+Public Enum PagerScrollFlags
+	PGF_SCROLLUP = 1
+	PGF_SCROLLDOWN = 2
+	PGF_SCROLLLEFT = 4
+	PGF_SCROLLRIGHT = 8
+End Enum
+
+Public Enum PagerCalcSizeFlags
+	PGF_CALCWIDT = 1
+	PGF_CALCHEIGHT = 2
+End Enum
+
+Public Enum PagerKeyDown
+	PGK_SHIFT = 1
+	PGK_CONTROL = 2
+	PGK_MENU = 3
+End Enum
+
+Public Const PGN_FIRST As Long = (-900)
+Public Const PGN_SCROLL  = (PGN_FIRST - 1)
+Public Const PGN_CALCSIZE  = (PGN_FIRST - 2)
+Public Const PGN_HOTITEMCHANGE  = (PGN_FIRST - 3)
+
+[ PackingAlignment (1) ]
+Public Type NMPGSCROLL
+	hdr As NMHDR
+	fwKeys As Integer
+	rcParent As RECT ' Contains Parent Window Rect
+	iDir As LONG ' Scrolling Direction
+	iXpos As LONG ' Horizontal scroll position
+	iYpos As LONG ' Vertical scroll position
+	iScroll As LONG ' [in/out] Amount to scroll
+End Type
+
+Public Type NMPGCALCSIZE
+	hdr As NMHDR
+	dwFlag As PagerCalcSizeFlags
+	iWidth As Long
+	iHeight As Long
+End Type
+
+Public Type NMPGHOTITEM
+	hdr As NMHDR
+	idOld As Long
+	idNew As Long
+	dwFlags As Long ' HICF_*
+End Type
+
+
+
+End Module

@@ -1,0 +1,212 @@
+Module modPropSheet
+
+#If TB_SHELLLIB_DEFINED = 0 Then
+Public Enum PSP_FLAGS
+	PSP_DEFAULT = &H00000000
+	PSP_DLGINDIRECT = &H00000001
+	PSP_USEHICON = &H00000002
+	PSP_USEICONID = &H00000004
+	PSP_USETITLE = &H00000008
+	PSP_RTLREADING = &H00000010
+	PSP_HASHELP = &H00000020
+	PSP_USEREFPARENT = &H00000040
+	PSP_USECALLBACK = &H00000080
+	PSP_PREMATURE = &H00000400
+	PSP_HIDEHEADER = &H00000800
+	PSP_USEHEADERTITLE = &H00001000
+	PSP_USEHEADERSUBTITLE = &H00002000
+	PSP_USEFUSIONCONTEXT = &H00004000
+End Enum
+
+Public Enum PSPCALLBACKMESSAGES
+	PSPCB_ADDREF = 0
+	PSPCB_RELEASE = 1
+	PSPCB_CREATE = 2
+    PSCB_BUTTONPRESSED = 3
+End Enum
+
+Public Type PROPSHEETPAGE
+	dwSize As long
+    dwFlags As PSP_FLAGS
+    hInstance As LongPtr
+    pResource As LongPtr
+    hIcon As LongPtr
+    pszTitle As LongPtr
+    pfnDlgProc As LongPtr
+    lParam As LongPtr
+    pfnCallback As LongPtr
+    pcRefParent As LongPtr
+End Type
+Public Type PROPSHEETPAGE_V2
+	dwSize As long
+    dwFlags As PSP_FLAGS
+    hInstance As LongPtr
+    pResource As LongPtr
+    hIcon As LongPtr
+    pszTitle As LongPtr
+    pfnDlgProc As LongPtr
+    lParam As LongPtr
+    pfnCallback As LongPtr
+    pcRefParent As LongPtr
+    pszHeaderTitle As LongPtr
+    pszHeaderSubTitle As LongPtr
+End Type
+Public Type PROPSHEETPAGE_V3
+	dwSize As long
+    dwFlags As PSP_FLAGS
+    hInstance As LongPtr
+    pResource As LongPtr
+    hIcon As LongPtr
+    pszTitle As LongPtr
+    pfnDlgProc As LongPtr
+    lParam As LongPtr
+    pfnCallback As LongPtr
+    pcRefParent As LongPtr
+    pszHeaderTitle As LongPtr
+    pszHeaderSubTitle As LongPtr
+    hActCtx As LongPtr
+End Type
+Public Type PROPSHEETPAGE_V4
+	dwSize As long
+    dwFlags As PSP_FLAGS
+    hInstance As LongPtr
+    pResource As LongPtr
+    hIcon As LongPtr
+    pszTitle As LongPtr
+    pfnDlgProc As LongPtr
+    lParam As LongPtr
+    pfnCallback As LongPtr
+    pcRefParent As LongPtr
+    pszHeaderTitle As LongPtr
+    pszHeaderSubTitle As LongPtr
+    hActCtx As LongPtr
+    bmHeader As LongPtr
+End Type
+Public Type PSHNOTIFY
+	hdr As NMHDR
+    lParam As LongPtr
+End Type
+
+Public Enum PSNOTIFYCODES
+	PSN_FIRST = (-200)
+	PSN_LAST = (-299)
+	PSN_SETACTIVE = (-200)
+	PSN_KILLACTIVE = (-201)
+	PSN_APPLY = (-202)
+	PSN_RESET = (-203)
+	PSN_HELP = (-205)
+	PSN_WIZBACK = (-206)
+	PSN_WIZNEXT = (-207)
+	PSN_WIZFINISH = (-208)
+	PSN_QUERYCANCEL = (-209)
+	PSN_GETOBJECT = (-210)
+	PSN_TRANSLATEACCELERATOR = (-211)
+	PSN_QUERYINITIALFOCUS = (-212)
+End Enum
+
+Public Enum PSNOTIFYRESULTS
+	PSNRET_NOERROR = 0
+	PSNRET_INVALID = 1
+	PSNRET_INVALID_NOCHANGEPAGE = 2
+	PSNRET_MESSAGEHANDLED = 3
+End Enum
+
+Public Enum PSMESSAGES
+	PSM_SETCURSEL = (&H400 + 101)
+	PSM_REMOVEPAGE = (&H400 + 102)
+	PSM_ADDPAGE = (&H400 + 103)
+	PSM_CHANGED = (&H400 + 104)
+	PSM_RESTARTWINDOWS = (&H400 + 105)
+	PSM_REBOOTSYSTEM = (&H400 + 106)
+	PSM_CANCELTOCLOSE = (&H400 + 107)
+	PSM_QUERYSIBLINGS = (&H400 + 108)
+	PSM_UNCHANGED = (&H400 + 109)
+	PSM_APPLY = (&H400 + 110)
+	PSM_SETTITLEA = (&H400 + 111)
+	PSM_SETTITLEW = (&H400 + 120)
+	PSM_SETWIZBUTTONS = (&H400 + 112)
+	PSM_PRESSBUTTON = (&H400 + 113)
+	PSM_SETCURSELID = (&H400 + 114)
+	PSM_SETFINISHTEXTA = (&H400 + 115)
+	PSM_SETFINISHTEXTW = (&H400 + 121)
+	PSM_GETTABCONTROL = (&H400 + 116)
+	PSM_ISDIALOGMESSAGE = (&H400 + 117)
+	PSM_GETCURRENTPAGEHWND = (&H400 + 118)
+	PSM_INSERTPAGE = (&H400 + 119)
+	PSM_SETHEADERTITLEA = (&H400 + 125)
+	PSM_SETHEADERTITLEW = (&H400 + 126)
+	PSM_SETHEADERSUBTITLEA = (&H400 + 127)
+	PSM_SETHEADERSUBTITLEW = (&H400 + 128)
+	PSM_HWNDTOINDEX = (&H400 + 129)
+	PSM_INDEXTOHWND = (&H400 + 130)
+	PSM_PAGETOINDEX = (&H400 + 131)
+	PSM_INDEXTOPAGE = (&H400 + 132)
+	PSM_IDTOINDEX = (&H400 + 133)
+	PSM_INDEXTOID = (&H400 + 134)
+	PSM_GETRESULT = (&H400 + 135)
+	PSM_RECALCPAGESIZES = (&H400 + 136)
+	PSM_SETNEXTTEXT = (&H400 + 137)
+	PSM_SHOWWIZBUTTONS = (&H400 + 138)
+	PSM_ENABLEWIZBUTTONS = (&H400 + 139)
+	PSM_SETBUTTONTEXT = (&H400 + 140)
+End Enum
+
+Public Enum PropSheetHeaderFlags
+	PSH_DEFAULT = &H00000000
+	PSH_PROPTITLE = &H00000001
+	PSH_USEHICON = &H00000002
+	PSH_USEICONID = &H00000004
+	PSH_PROPSHEETPAGE = &H00000008
+	PSH_WIZARDHASFINISH = &H00000010
+	PSH_WIZARD = &H00000020
+	PSH_USEPSTARTPAGE = &H00000040
+	PSH_NOAPPLYNOW = &H00000080
+	PSH_USECALLBACK = &H00000100
+	PSH_HASHELP = &H00000200
+	PSH_MODELESS = &H00000400
+	PSH_RTLREADING = &H00000800
+	PSH_WIZARDCONTEXTHELP = &H00001000
+' ----- New flags for wizard97 -----------
+	PSH_WIZARD97 = &H01000000
+	PSH_WATERMARK = &H00008000
+	PSH_USEHBMWATERMARK = &H00010000  ' user pass in a hbmWatermark instead of pszbmWatermark
+	PSH_USEHPLWATERMARK = &H00020000  '
+	PSH_STRETCHWATERMARK = &H00040000  ' stretchwatermark also applies for the header
+	PSH_HEADER = &H00080000
+	PSH_USEHBMHEADER = &H00100000
+	PSH_USEPAGELANG = &H00200000  ' use frame dialog template matched to page
+	PSH_WIZARD_LITE = &H00400000
+	PSH_NOCONTEXTHELP = &H02000000
+	PSH_AEROWIZARD = &H00004000
+	PSH_RESIZABLE = &H04000000
+	PSH_HEADERBITMAP = &H08000000
+	PSH_NOMARGIN = &H10000000
+End Enum
+
+
+Public Enum PSWIZBUTTONS
+	PSWIZB_BACK = &H00000001
+	PSWIZB_NEXT = &H00000002
+	PSWIZB_FINISH = &H00000004
+	PSWIZB_DISABLEDFINISH = &H00000008
+	PSWIZB_CANCEL = &H00000010
+End Enum
+
+Public Enum PSBUTTONS
+	PSBTN_BACK = 0
+	PSBTN_NEXT = 1
+	PSBTN_FINISH = 2
+	PSBTN_OK = 3
+	PSBTN_APPLYNOW = 4
+	PSBTN_CANCEL = 5
+	PSBTN_HELP = 6
+	PSBTN_MAX = 6
+End Enum
+Public Declare PtrSafe Function CreatePropertySheetPage Lib "comctl32" Alias "CreatePropertySheetPageA" (psp As Any) As LongPtr
+Public Declare PtrSafe Function CreatePropertySheetPageW Lib "comctl32" (psp As Any) As LongPtr
+Public Declare PtrSafe Function DestroyPropertySheetPage Lib "comctl32" (ByVal hPage As LongPtr) As Long
+Public Declare PtrSafe Function PropertySheetPage Lib "comctl32" Alias "CreatePropertySheetPageA" (psp As Any) As LongPtr
+Public Declare PtrSafe Function PropertySheetPageW Lib "comctl32" (psp As Any) As LongPtr
+#End If
+
+End Module

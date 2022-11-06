@@ -1,0 +1,10 @@
+Module modMenuHelp
+
+Public Declare PtrSafe Sub MenuHelp Lib "comctl32" (ByVal uMsg As Long, ByVal wParam As LongPtr, ByVal lParam As LongPtr, ByVal hMainMenu As LongPtr, _
+        ByVal hInst As LongPtr, ByVal hwndStatus As LongPtr, lpwIDs As Long)
+        
+Public Declare PtrSafe Function ShowHideMenu Lib "comctl32" (ByVal hWnd As LongPtr, ByVal uFlags As LongPtr, lpInfo As Long) As Long
+
+Public Declare PtrSafe Sub GetEffectiveClientRect Lib "comctl32" (ByVal hWnd As LongPtr, lprc As RECT, ByVal lpInfo As LongPtr)
+
+End Module

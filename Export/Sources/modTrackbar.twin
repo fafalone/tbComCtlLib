@@ -1,0 +1,99 @@
+Module modTrackbar
+
+Public Const TRACKBAR_CLASS = "msctls_trackbar"
+
+Public Const TBM_GETPOS  = (WM_USER)
+Public Const TBM_GETRANGEMIN  = (WM_USER + 1)
+Public Const TBM_GETRANGEMAX  = (WM_USER + 2)
+Public Const TBM_GETTIC  = (WM_USER + 3)
+Public Const TBM_SETTIC  = (WM_USER + 4)
+Public Const TBM_SETPOS  = (WM_USER + 5)
+Public Const TBM_SETRANGE  = (WM_USER + 6)
+Public Const TBM_SETRANGEMIN  = (WM_USER + 7)
+Public Const TBM_SETRANGEMAX  = (WM_USER + 8)
+Public Const TBM_CLEARTICS  = (WM_USER + 9)
+Public Const TBM_SETSEL  = (WM_USER + 10)
+Public Const TBM_SETSELSTART  = (WM_USER + 11)
+Public Const TBM_SETSELEND  = (WM_USER + 12)
+Public Const TBM_GETPTICS  = (WM_USER + 14)
+Public Const TBM_GETTICPOS  = (WM_USER + 15)
+Public Const TBM_GETNUMTICS  = (WM_USER + 16)
+Public Const TBM_GETSELSTART  = (WM_USER + 17)
+Public Const TBM_GETSELEND  = (WM_USER + 18)
+Public Const TBM_CLEARSEL  = (WM_USER + 19)
+Public Const TBM_SETTICFREQ  = (WM_USER + 20)
+Public Const TBM_SETPAGESIZE  = (WM_USER + 21)
+Public Const TBM_GETPAGESIZE  = (WM_USER + 22)
+Public Const TBM_SETLINESIZE  = (WM_USER + 23)
+Public Const TBM_GETLINESIZE  = (WM_USER + 24)
+Public Const TBM_GETTHUMBRECT  = (WM_USER + 25)
+Public Const TBM_GETCHANNELRECT  = (WM_USER + 26)
+Public Const TBM_SETTHUMBLENGTH  = (WM_USER + 27)
+Public Const TBM_GETTHUMBLENGTH  = (WM_USER + 28)
+Public Const TBM_SETTOOLTIPS  = (WM_USER + 29)
+Public Const TBM_GETTOOLTIPS  = (WM_USER + 30)
+Public Const TBM_SETTIPSIDE  = (WM_USER + 31)
+Public Const TBM_SETBUDDY  = (WM_USER + 32)  ' wparam = BOOL fLeft; (or right)
+Public Const TBM_GETBUDDY  = (WM_USER + 33)  ' wparam = BOOL fLeft; (or right)
+Public Const TBM_SETPOSNOTIFY  = (WM_USER + 34)
+Public Const TBM_SETUNICODEFORMAT  = CCM_SETUNICODEFORMAT
+Public Const TBM_GETUNICODEFORMAT  = CCM_GETUNICODEFORMAT
+
+Public Const TRBN_FIRST As Long = (-1501)
+Public Const TRBN_THUMBPOSCHANGING = (TRBN_FIRST - 1)
+
+
+Public Enum TrackBarStyles
+	TBS_AUTOTICKS = &H0001
+	TBS_VERT = &H0002
+	TBS_HORZ = &H0000
+	TBS_TOP = &H0004
+	TBS_BOTTOM = &H0000
+	TBS_LEFT = &H0004
+	TBS_RIGHT = &H0000
+	TBS_BOTH = &H0008
+	TBS_NOTICKS = &H0010
+	TBS_ENABLESELRANGE = &H0020
+	TBS_FIXEDLENGTH = &H0040
+	TBS_NOTHUMB = &H0080
+	TBS_TOOLTIPS = &H0100
+	TBS_REVERSED = &H0200
+	TBS_DOWNISLEFT = &H0400
+	TBS_NOTIFYBEFOREREMOVE = &H0800
+	TBS_TRANSPARENTBKGND = &H1000
+End Enum
+
+Public Enum TrackBarTipSideFlags
+	TBTS_TOP = 0
+	TBTS_LEFT = 1
+	TBTS_BOTTOM = 2
+	TBTS_RIGHT = 3
+End Enum
+
+Public Enum TrackBarNotifications
+	TB_LINEUP = 0
+	TB_LINEDOWN = 1
+	TB_PAGEUP = 2
+	TB_PAGEDOWN = 3
+	TB_THUMBPOSITION = 4
+	TB_THUMBTRACK = 5
+	TB_TOP = 6
+	TB_BOTTOM = 7
+	TB_ENDTRACK = 8
+End Enum
+
+Public Enum TrackBarItemSpecs
+	TBCD_TICS = &H0001
+	TBCD_THUMB = &H0002
+	TBCD_CHANNEL = &H0003
+End Enum
+
+Public Type NMTRBTHUMBPOSCHANGING
+	hdr As NMHDR
+	dwPos As LONG
+	nReason As TrackBarNotifications
+End Type
+
+
+
+End Module

@@ -1,0 +1,233 @@
+Module modCombo
+
+Public Const WC_COMBOBOX = "ComboBox"
+Public Const WC_COMBOBOXEX = "ComboBoxEx32"
+
+Public Const H_MAX As Long = (&HFFFF + 1)
+
+Public Const CB_ADDSTRING = &H143
+Public Const CB_DELETESTRING = &H144
+Public Const CB_DIR = &H145
+Public Const CB_FINDSTRING = &H14C
+Public Const CB_FINDSTRINGEXACT = &H158
+Public Const CB_GETCOMBOBOXINFO = &H164
+Public Const CB_GETCOUNT = &H146
+Public Const CB_GETCURSEL = &H147
+Public Const CB_GETDROPPEDCONTROLRECT = &H152
+Public Const CB_GETDROPPEDSTATE = &H157
+Public Const CB_GETDROPPEDWIDTH = &H15F
+Public Const CB_GETEDITSEL = &H140
+Public Const CB_GETEXTENDEDUI = &H156
+Public Const CB_GETHORIZONTALEXTENT = &H15D
+Public Const CB_GETITEMDATA = &H150
+Public Const CB_GETITEMHEIGHT = &H154
+Public Const CB_GETLBTEXT = &H148
+Public Const CB_GETLBTEXTLEN = &H149
+Public Const CB_GETLOCALE = &H15A
+Public Const CB_GETTOPINDEX = &H15B
+Public Const CB_INITSTORAGE = &H161
+Public Const CB_INSERTSTRING = &H14A
+Public Const CB_LIMITTEXT = &H141
+Public Const CB_MSGMAX = &H15B
+Public Const CB_MULTIPLEADDSTRING = &H163
+Public Const CB_RESETCONTENT = &H14B
+Public Const CB_SELECTSTRING = &H14D
+Public Const CB_SETCURSEL = &H14E
+Public Const CB_SETDROPPEDWIDTH = &H160
+Public Const CB_SETEDITSEL = &H142
+Public Const CB_SETEXTENDEDUI = &H155
+Public Const CB_SETHORIZONTALEXTENT = &H15E
+Public Const CB_SETITEMDATA = &H151
+Public Const CB_SETITEMHEIGHT = &H153
+Public Const CB_SETLOCALE = &H159
+Public Const CB_SETTOPINDEX = &H15C
+Public Const CB_SHOWDROPDOWN = &H14F
+Public Const CBEC_SETCOMBOFOCUS = (&H165 + 1)   ' ;internal_nt
+Public Const CBEC_KILLCOMBOFOCUS = (&H165 + 2) ';internal_nt
+Public Const CBM_FIRST As Long = &H1700&
+Public Const CB_SETMINVISIBLE = (CBM_FIRST + 1)
+Public Const CB_GETMINVISIBLE = (CBM_FIRST + 2)
+Public Const CB_SETCUEBANNER = (CBM_FIRST + 3)
+Public Const CB_GETCUEBANNER = (CBM_FIRST + 4)
+Public Const CBEM_INSERTITEMA = (WM_USER + 1)
+Public Const CBEM_SETIMAGELIST = (WM_USER + 2)
+Public Const CBEM_GETIMAGELIST = (WM_USER + 3)
+Public Const CBEM_GETITEMA = (WM_USER + 4)
+Public Const CBEM_SETITEMA = (WM_USER + 5)
+Public Const CBEM_DELETEITEM = CB_DELETESTRING
+Public Const CBEM_GETCOMBOCONTROL = (WM_USER + 6)
+Public Const CBEM_GETEDITCONTROL = (WM_USER + 7)
+Public Const CBEM_SETEXTENDEDSTYLE = (WM_USER + 8)
+Public Const CBEM_GETEXTENDEDSTYLE = (WM_USER + 9)
+Public Const CBEM_HASEDITCHANGED = (WM_USER + 10)
+Public Const CBEM_INSERTITEMW = (WM_USER + 11)
+Public Const CBEM_SETITEMW = (WM_USER + 12)
+Public Const CBEM_GETITEMW = (WM_USER + 13)
+Public Const CBEM_INSERTITEM = CBEM_INSERTITEMW
+Public Const CBEM_SETITEM = CBEM_SETITEMW
+Public Const CBEM_GETITEM = CBEM_GETITEMW
+Public Const CBEM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT '8192 + 5
+Public Const CBEM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT '8192 + 6
+Public Const CBEM_SETWINDOWTHEME = CCM_SETWINDOWTHEME '8192 + 11
+Public Enum ComboBox_Styles
+    CBS_SIMPLE = &H1&
+    CBS_DROPDOWN = &H2&
+    CBS_DROPDOWNLIST = &H3&
+    CBS_OWNERDRAWFIXED = &H10&
+    CBS_OWNERDRAWVARIABLE = &H20&
+    CBS_AUTOHSCROLL = &H40
+    CBS_OEMCONVERT = &H80
+    CBS_SORT = &H100&
+    CBS_HASSTRINGS = &H200&
+    CBS_NOINTEGRALHEIGHT = &H400&
+    CBS_DISABLENOSCROLL = &H800&
+    CBS_UPPERCASE = &H2000
+    CBS_LOWERCASE = &H4000
+End Enum
+
+'// Notification messages
+Public Const CBN_ERRSPACE = (-1)
+Public Const CBN_SELCHANGE = 1
+Public Const CBN_DBLCLK = 2
+Public Const CBN_SETFOCUS = 3
+Public Const CBN_KILLFOCUS = 4
+Public Const CBN_EDITCHANGE = 5
+Public Const CBN_EDITUPDATE = 6
+Public Const CBN_DROPDOWN = 7
+Public Const CBN_CLOSEUP = 8
+Public Const CBN_SELENDOK = 9
+Public Const CBN_SELENDCANCEL = 10
+Public Const CBEN_FIRST = (H_MAX - 800&)
+Public Const CBEN_LAST = (H_MAX - 830&)
+Public Const CBEN_GETDISPINFO = (CBEN_FIRST - 0)
+Public Const CBEN_INSERTITEM = (CBEN_FIRST - 1)
+Public Const CBEN_DELETEITEM = (CBEN_FIRST - 2)
+Public Const CBEN_BEGINEDIT = (CBEN_FIRST - 4)
+Public Const CBEN_ENDEDIT = (CBEN_FIRST - 5)
+Public Const CBEN_ENDEDITW = (CBEN_FIRST - 6)
+Public Const CBEN_GETDISPINFOW = (CBEN_FIRST - 7)
+Public Const CBEN_DRAGBEGIN = (CBEN_FIRST - 8)
+Public Const CBEN_DRAGBEGINW = (CBEN_FIRST - 9)
+
+'// lParam specifies why the endedit is happening
+Public Const CBENF_KILLFOCUS = 1
+Public Const CBENF_RETURN = 2
+Public Const CBENF_ESCAPE = 3
+Public Const CBENF_DROPDOWN = 4
+
+Public Enum CBEX_ExStyles
+    CBES_EX_NOEDITIMAGE = &H1
+    CBES_EX_NOEDITIMAGEINDENT = &H2
+    CBES_EX_PATHWORDBREAKPROC = &H4
+    CBES_EX_NOSIZELIMIT = &H8
+    CBES_EX_CASESENSITIVE = &H10
+    '6.0
+    CBES_EX_TEXTENDELLIPSIS = &H20
+End Enum
+Public Type COMBOBOXEXITEM
+    Mask As COMBOBOXEXITEM_Mask
+    iItem As LongPtr
+    pszText As String
+    cchTextMax As Long
+    iImage As Long
+    iSelectedImage As Long
+    iOverlay As Long
+    iIndent As Long
+    lParam As LongPtr
+End Type
+Public Type COMBOBOXEXITEMW
+    Mask As COMBOBOXEXITEM_Mask
+    iItem As LongPtr
+    pszText As LongPtr      '// LPCSTR
+    cchTextMax As Long
+    iImage As Long
+    iSelectedImage As Long
+    iOverlay As Long
+    iIndent As Long
+    lParam As LongPtr
+End Type
+Public Enum COMBOBOXEXITEM_Mask
+    CBEIF_TEXT = &H1
+    CBEIF_IMAGE = &H2
+    CBEIF_SELECTEDIMAGE = &H4
+    CBEIF_OVERLAY = &H8
+    CBEIF_INDENT = &H10
+    CBEIF_LPARAM = &H20
+    CBEIF_DI_SETITEM = &H10000000
+End Enum
+Public Type NMCOMBOBOXEX
+    hdr As NMHDR
+    ceItem As COMBOBOXEXITEM
+End Type
+Public Type NMCOMBOBOXEXW
+    hdr As NMHDR
+    ceItem As COMBOBOXEXITEMW
+End Type
+
+Public Const CBEMAXSTRLEN = 260
+
+'// Drag notification struct
+Public Type NMCBEDRAGBEGIN
+    hdr As NMHDR
+    iItemid As Long
+    szText(0 To CBEMAXSTRLEN - 1) As Byte   '// As String * CBEMAXSTRLEN
+End Type
+Public Type NMCBEDRAGBEGINW
+    hdr As NMHDR
+    iItemid As Long
+    szText(0 To CBEMAXSTRLEN - 1) As Integer   '// As String * CBEMAXSTRLEN
+End Type
+
+'// CBEN_ENDEDIT sends this information...
+'// fChanged if the user actually did anything
+'// iNewSelection gives what would be the new selection unless the notify is failed
+'// iNewSelection may be CB_ERR if there's no match
+Public Type NMCBEENDEDIT
+    hdr As NMHDR
+    fChanged As Long
+    iNewSelection As Long
+    szText(0 To CBEMAXSTRLEN - 1) As Byte   '// As String * CBEMAXSTRLEN
+    iWhy As Long
+End Type
+Public Type NMCBEENDEDITW
+    hdr As NMHDR
+    fChanged As Long
+    iNewSelection As Long
+    szText(0 To CBEMAXSTRLEN - 1) As Integer   '// As String * CBEMAXSTRLEN
+    iWhy As Long
+End Type
+
+Public Type COMBOBOXINFO
+    cbSize As Long
+    RCItem As RECT
+    rcButton As RECT
+    stateButton As Long
+    hWndCombo As LongPtr
+    hWndItem As LongPtr
+    hwndList As LongPtr
+End Type
+Public Declare PtrSafe Function GetComboBoxInfo Lib "user32" (ByVal hWndCombo As LongPtr, pcbi As COMBOBOXINFO) As Long
+
+
+Public Declare PtrSafe Function DlgDirListComboBoxA Lib "user32" (ByVal hDlg As LongPtr, ByVal lpPathSpec As String, ByVal nIDComboBox As Long, ByVal nIDStaticPath As Long, ByVal uFileType As DDL_Flags) As Long
+Public Declare PtrSafe Function DlgDirListComboBoxW Lib "user32" (ByVal hDlg As LongPtr, ByVal lpPathSpec As LongPtr, ByVal nIDComboBox As Long, ByVal nIDStaticPath As Long, ByVal uFileType As DDL_Flags) As Long
+
+
+Public Function ComboBox_SetMinVisible(hwnd As LongPtr, iMinVisible As Long) As Long
+    Return CLng(SendMessage(hwnd, CB_SETMINVISIBLE, iMinVisible, ByVal 0))
+End Function
+
+Public Function ComboBox_GetMinVisible(hwnd As LongPtr) As Long
+    Return CLng(SendMessage(hwnd, CB_GETMINVISIBLE, 0, ByVal 0))
+End Function
+
+Public Function ComboBox_SetCueBannerText(hwnd As LongPtr, lpcwText As LongPtr) As Long
+    Return CLng(SendMessage(hwnd, CB_SETCUEBANNER, 0, ByVal lpcwText))
+End Function
+
+Public Function ComboBox_GetCueBannerText(hwnd As LongPtr, lpwText As LongPtr, cchText As Long) As Long
+    Return CLng(SendMessage(hwnd, CB_GETCUEBANNER, lpwText, ByVal cchText))
+End Function
+
+
+End Module

@@ -1,0 +1,123 @@
+Module modDatePicker
+
+Public Const DATETIMEPICK_CLASS = "SysDateTimePick32"
+
+Public Const DTM_FIRST                     As Long = &H1000
+Public Const DTM_GETSYSTEMTIME             As Long = (DTM_FIRST + 1)
+Public Const DTM_SETSYSTEMTIME             As Long = (DTM_FIRST + 2)
+Public Const DTM_SETRANGE                  As Long = (DTM_FIRST + 4)
+Public Const DTM_SETFORMATA                As Long = (DTM_FIRST + 5)
+Public Const DTM_SETMCCOLOR                As Long = (DTM_FIRST + 6)
+Public Const DTM_GETMCCOLOR                As Long = (DTM_FIRST + 7)
+Public Const DTM_GETMONTHCAL               As Long = (DTM_FIRST + 8)
+Public Const DTM_SETMCFONT                 As Long = (DTM_FIRST + 9)
+Public Const DTM_GETMCFONT                 As Long = (DTM_FIRST + 10)
+Public Const DTM_SETMCSTYLE                As Long = (DTM_FIRST + 11) ' ; >= Vista
+Public Const DTM_GETMCSTYLE                As Long = (DTM_FIRST + 12) ' ; >= Vista
+Public Const DTM_CLOSEMONTHCAL             As Long = (DTM_FIRST + 13) '; >= Vista
+Public Const DTM_GETDATETIMEPICKERINFO     As Long = (DTM_FIRST + 14) '; >= Vista
+Public Const DTM_GETIDEALSIZE              As Long = (DTM_FIRST + 15)
+Public Const DTM_SETFORMATW                As Long = (DTM_FIRST + 50)
+
+Public Const DTN_FIRST                     As Long = (-760)
+Public Const DTN_LAST                      As Long = (-799)
+Public Const DTN_DATETIMECHANGE            As Long = (DTN_FIRST + 1)
+Public Const DTN_USERSTRINGA               As Long = (DTN_FIRST + 2)
+Public Const DTN_WMKEYDOWNA                As Long = (DTN_FIRST + 3)
+Public Const DTN_FORMATA                   As Long = (DTN_FIRST + 4)
+Public Const DTN_FORMATQUERYA              As Long = (DTN_FIRST + 5)
+Public Const DTN_DROPDOWN                  As Long = (DTN_FIRST + 6)
+Public Const DTN_CLOSEUP                   As Long = (DTN_FIRST + 7)
+Public Const DTN_USERSTRINGW               As Long = (DTN_FIRST + 15)
+Public Const DTN_WMKEYDOWNW                As Long = (DTN_FIRST + 16)
+Public Const DTN_FORMATW                   As Long = (DTN_FIRST + 17)
+Public Const DTN_FORMATQUERYW              As Long = (DTN_FIRST + 18)
+
+Public Const GDT_ERROR                     As Long = -1
+Public Const GDT_VALID                     As Long = 0
+Public Const GDT_NONE                      As Long = 1
+Public Const GDTR_MAX                      As Long = &H2
+Public Const GDTR_MIN                      As Long = &H1
+
+Public Enum DTSTYLES
+    DTS_SHORTDATEFORMAT = &H0
+    DTS_UPDOWN = &H1
+    DTS_SHOWNONE = &H2
+    DTS_LONGDATEFORMAT = &H4
+    DTS_TIMEFORMAT = &H9
+    DTS_APPCANPARSE = &H10
+    DTS_RIGHTALIGN = &H20
+    DTS_SHORTDATECENTURYFORMAT = &HC
+End Enum
+
+Public Type DATETIMEPICKERINFO
+	cbSize As LONG
+	rcCheck As RECT
+	stateCheck As LONG
+	rcButton As RECT
+	stateButton As LONG
+	hwndEdit As LongPtr
+	hwndUD As LongPtr
+	hwndDropDown As LongPtr
+End Type
+
+Public Type NMDATETIMECHANGE
+    NMHDR                       As NMHDR
+    Flags                       As Long
+    ST                          As SYSTEMTIME
+End Type
+
+Public Type NMDATETIMESTRINGW
+	nmhdr As NMHDR
+	pszUserString As LongPtr ' string user entered
+	st As SYSTEMTIME ' app fills this in
+	dwFlags As Long ' GDT_VALID or GDT_NONE
+End Type
+Public Type NMDATETIMESTRINGA
+	nmhdr As NMHDR
+	pszUserString As String ' string user entered
+	st As SYSTEMTIME ' app fills this in
+	dwFlags As Long ' GDT_VALID or GDT_NONE
+End Type
+
+Public Type NMDATETIMEWMKEYDOWNW
+	nmhdr As NMHDR
+	nVirtKey As Long ' virtual key code of WM_KEYDOWN which MODIFIES an X field
+	pszFormat As LongPtr ' format substring
+	st As SYSTEMTIME ' current systemtime, app should modify based on key
+End Type
+Public Type NMDATETIMEWMKEYDOWNA
+	nmhdr As NMHDR
+	nVirtKey As Long ' virtual key code of WM_KEYDOWN which MODIFIES an X field
+	pszFormat As String ' format substring
+	st As SYSTEMTIME ' current systemtime, app should modify based on key
+End Type
+
+Public Type NMDATETIMEFORMATW
+	nmhdr As NMHDR
+	pszFormat As LongPtr ' format substring
+	st As SYSTEMTIME ' current systemtime
+	pszDisplay As LongPtr ' string to display
+	szDisplay(0 To 63) As Integer ' buffer pszDisplay originally points at
+End Type
+Public Type NMDATETIMEFORMATA
+	nmhdr As NMHDR
+	pszFormat As String ' format substring
+	st As SYSTEMTIME ' current systemtime
+	pszDisplay As String ' string to display
+	szDisplay(0 To 63) As Byte ' buffer pszDisplay originally points at
+End Type
+
+Public Type NMDATETIMEFORMATQUERYW
+	nmhdr As NMHDR
+	pszFormat As LongPtr ' format substring
+	szMax As SIZE ' max bounding rectangle app will use for this format string
+End Type
+Public Type NMDATETIMEFORMATQUERYA
+	nmhdr As NMHDR
+	pszFormat As String ' format substring
+	szMax As SIZE ' max bounding rectangle app will use for this format string
+End Type
+
+
+End Module

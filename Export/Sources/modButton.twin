@@ -1,0 +1,190 @@
+Module modButton
+
+Public Enum ButtonMessages
+	BM_GETCHECK = &H00F0
+	BM_SETCHECK = &H00F1
+	BM_GETSTATE = &H00F2
+	BM_SETSTATE = &H00F3
+	BM_SETSTYLE = &H00F4
+	BM_CLICK = &H00F5
+	BM_GETIMAGE = &H00F6
+	BM_SETIMAGE = &H00F7
+	BM_SETDONTCLICK = &H00F8
+	BCM_FIRST = &H1600
+	BCM_GETIDEALSIZE = (BCM_FIRST + &H0001)
+	BCM_SETIMAGELIST = (BCM_FIRST + &H0002)
+	BCM_GETIMAGELIST = (BCM_FIRST + &H0003)
+	BCM_SETTEXTMARGIN = (BCM_FIRST + &H0004)
+	BCM_GETTEXTMARGIN = (BCM_FIRST + &H0005)
+	BCM_SETDROPDOWNSTATE = (BCM_FIRST + &H0006)
+	BCM_SETSPLITINFO = (BCM_FIRST + &H0007)
+	BCM_GETSPLITINFO = (BCM_FIRST + &H0008)
+	BCM_SETNOTE = (BCM_FIRST + &H0009)
+	BCM_GETNOTE = (BCM_FIRST + &H000A)
+	BCM_GETNOTELENGTH = (BCM_FIRST + &H000B)
+	BCM_SETSHIELD = (BCM_FIRST + &H000C)
+End Enum
+
+Public Enum ButtonStates
+    BST_UNCHECKED = &H0000
+    BST_CHECKED = &H0001
+    BST_INDETERMINAT = &H0002
+    BST_PUSHED = &H0004
+    BST_FOCUS = &H0008
+	BST_HOT = &H0200
+	BST_DROPDOWNPUSHED = &H0400
+End Enum
+
+Public Enum ButtonNotifications
+	BN_CLICKED = 0
+	BN_PAINT = 1
+	BN_HILITE = 2
+	BN_UNHILITE = 3
+	BN_DISABLE = 4
+	BN_DOUBLECLICKED = 5
+	BN_PUSHED = BN_HILITE
+	BN_UNPUSHED = BN_UNHILITE
+	BN_DBLCLK = BN_DOUBLECLICKED
+	BN_SETFOCUS = 6
+	BN_KILLFOCUS = 7
+	BCN_FIRST = (-1250)
+	BCN_HOTITEMCHANGE = (BCN_FIRST + &H0001)
+	BCN_DROPDOWN = (BCN_FIRST + &H0002)
+	NM_GETCUSTOMSPLITRECT = (BCN_FIRST + &H0003)
+End Enum
+
+Public Enum ButtonStyles
+	BS_SPLITBUTTON = &H0000000C
+	BS_DEFSPLITBUTTON = &H0000000D
+	BS_COMMANDLINK = &H0000000E
+	BS_DEFCOMMANDLINK = &H0000000F
+	BS_PUSHBUTTON = &H00000000
+	BS_DEFPUSHBUTTON = &H00000001
+	BS_CHECKBOX = &H00000002
+	BS_AUTOCHECKBOX = &H00000003
+	BS_RADIOBUTTON = &H00000004
+	BS_3STATE = &H00000005
+	BS_AUTO3STATE = &H00000006
+	BS_GROUPBOX = &H00000007
+	BS_USERBUTTON = &H00000008
+	BS_AUTORADIOBUTTON = &H00000009
+	BS_PUSHBOX = &H0000000A
+	BS_OWNERDRAW = &H0000000B
+	BS_TYPEMASK = &H0000000F
+	BS_LEFTTEXT = &H00000020
+	BS_TEXT = &H00000000
+	BS_ICON = &H00000040
+	BS_BITMAP = &H00000080
+	BS_LEFT = &H00000100
+	BS_RIGHT = &H00000200
+	BS_CENTER = &H00000300
+	BS_TOP = &H00000400
+	BS_BOTTOM = &H00000800
+	BS_VCENTER = &H00000C00
+	BS_PUSHLIKE = &H00001000
+	BS_MULTILINE = &H00002000
+	BS_NOTIFY = &H00004000
+	BS_FLAT = &H00008000
+	BS_RIGHTBUTTON = &H00000020
+End Enum
+
+Public Enum BUTTON_IMAGELIST_ALIGN
+	BUTTON_IMAGELIST_ALIGN_LEFT = 0
+	BUTTON_IMAGELIST_ALIGN_RIGHT = 1
+	BUTTON_IMAGELIST_ALIGN_TOP = 2
+	BUTTON_IMAGELIST_ALIGN_BOTTOM = 3
+	BUTTON_IMAGELIST_ALIGN_CENTER = 4 ' Doesn't draw text
+End Enum
+Public Type BUTTON_IMAGELIST
+    himl As LongPtr
+    margin As RECT
+    uAlign As BUTTON_IMAGELIST_ALIGN
+End Type
+
+Public Type NMBCHOTITEM
+	hdr As NMHDR
+	dwFlags As HIC_FLAGS ' HICF_*
+End Type
+
+Public Enum BCS_Mask
+	BCSIF_GLYPH = &H0001
+	BCSIF_IMAGE = &H0002
+	BCSIF_STYLE = &H0004
+	BCSIF_SIZE = &H0008
+End Enum
+Public Enum BCS_Style
+	BCSS_NOSPLIT = &H0001
+	BCSS_STRETCH = &H0002
+	BCSS_ALIGNLEFT = &H0004
+	BCSS_IMAGE = &H0008
+End Enum
+Public Type BUTTON_SPLITINFO
+	mask As BCS_Mask
+	himlGlyph As LongPtr ' interpreted as WCHAR if BCSIF_GLYPH is set
+	uSplitStyle As BCS_Style
+	size As SIZE
+End Type
+
+Public Const BCCL_NOGLYPH As Long = (-1)
+
+
+Public Function Button_GetIdealSize(hWnd As LongPtr, psize As Long) As Long
+Button_GetIdealSize = CLng(SendMessage(hWnd, BCM_GETIDEALSIZE, 0, psize))
+End Function
+Public Function Button_SetImageList(hWnd As LongPtr, pbuttonImagelist As LongPtr) As LongPtr
+Button_SetImageList = SendMessage(hWnd, BCM_SETIMAGELIST, 0, ByVal pbuttonImagelist)
+End Function
+Public Function Button_GetImageList(hWnd As LongPtr, pbuttonImagelist As LongPtr) As LongPtr
+Button_GetImageList = SendMessage(hWnd, BCM_GETIMAGELIST, 0, ByVal pbuttonImagelist)
+End Function
+Public Function Button_SetTextMargin(hWnd As LongPtr, pmargin As LongPtr) As Long
+Button_SetTextMargin = CLng(SendMessage(hWnd, BCM_SETTEXTMARGIN, 0, ByVal pmargin))
+End Function
+Public Function Button_GetTextMargin(hWnd As LongPtr, pmargin As LongPtr) As Long
+Button_GetTextMargin = CLng(SendMessage(hWnd, BCM_GETTEXTMARGIN, 0, pmargin))
+End Function
+Public Function Button_SetDropDownState(hWnd As LongPtr, fDropDown As Long) As Long
+Button_SetDropDownState = CLng(SendMessage(hWnd, BCM_SETDROPDOWNSTATE, fDropDown, ByVal 0&))
+End Function
+Public Function Button_SetSplitInfo(hWnd As LongPtr, pInfo As BUTTON_SPLITINFO) As Long
+Button_SetSplitInfo = CLng(SendMessage(hWnd, BCM_SETSPLITINFO, 0, pInfo))
+End Function
+Public Function Button_GetSplitInfo(hWnd As LongPtr, pInfo As BUTTON_SPLITINFO) As Long
+Button_GetSplitInfo = CLng(SendMessage(hWnd, BCM_GETSPLITINFO, 0, pInfo))
+End Function
+Public Function Button_SetNote(hWnd As LongPtr, psz As LongPtr) As Long
+Button_SetNote = CLng(SendMessage(hWnd, BCM_SETNOTE, 0, ByVal psz))
+End Function
+Public Function Button_GetNote(hWnd As LongPtr, pcc As Long, psz As LongPtr) As Long
+Button_GetNote = CLng(SendMessage(hWnd, BCM_GETNOTE, pcc, ByVal psz))
+End Function
+Public Function Button_GetNoteLength(hWnd As LongPtr) As Long
+Button_GetNoteLength = CLng(SendMessage(hWnd, BCM_GETNOTELENGTH, 0, ByVal 0&))
+End Function
+Public Function Button_SetElevationRequiredState(hWnd As LongPtr, fRequired As Long) As Long
+Button_SetElevationRequiredState = CLng(SendMessage(hWnd, BCM_SETSHIELD, 0, ByVal fRequired))
+End Function
+Public Function Button_SetStyle(hWnd As LongPtr, dwStyle As ButtonStyles, fRedraw As Long) As Long
+Button_SetStyle = CLng(SendMessage(hWnd, BM_SETSTYLE, LoWord(dwStyle), ByVal MAKELPARAM(fRedraw, 0)))
+End Function
+Public Function Button_GetState(hWnd As LongPtr) As ButtonStates
+Button_GetState = CLng(SendMessage(hWnd, BM_GETSTATE, 0, ByVal 0&))
+End Function
+Public Function Button_SetState(hWnd As LongPtr, State As ButtonStates) As Long
+Button_SetState = CLng(SendMessage(hWnd, BM_SETSTATE, State, ByVal 0&))
+End Function
+Public Function Button_GetCheck(hWnd As LongPtr) As Long
+Button_GetCheck = CLng(SendMessage(hWnd, BM_GETCHECK, 0, ByVal 0&))
+End Function
+Public Function Button_SetCheck(hWnd As LongPtr, check As Long) As Long
+Button_SetCheck = CLng(SendMessage(hWnd, BM_SETCHECK, check, ByVal 0&))
+End Function
+Public Function SetButtonStyle(hWnd As LongPtr, dwNewStyle As ButtonStyles, Optional bAdd As Boolean = True) As Long
+Dim dwStyle As Long
+If bAdd Then
+    dwStyle = CLng(GetWindowLong(hWnd, GWL_STYLE))
+End If
+dwStyle = dwStyle Or dwNewStyle
+SetButtonStyle = CLng(SetWindowLong(hWnd, GWL_STYLE, dwStyle))
+End Function
+End Module

@@ -1,0 +1,42 @@
+Module modProgress
+
+Public Const PROGRESS_CLASSW = "msctls_progress32"
+
+Public Enum ProgressStyles
+	PBS_SMOOTH = &H01
+    PBS_SHOWPOS = &H02 'UNDOCUMENTED
+	PBS_VERTICAL = &H04
+	PBS_MARQUEE = &H08
+	PBS_SMOOTHREVERSE = &H10
+End Enum
+
+Public Const PBM_SETRANGE  = (WM_USER + 1)
+Public Const PBM_SETPOS  = (WM_USER + 2)
+Public Const PBM_DELTAPOS  = (WM_USER + 3)
+Public Const PBM_SETSTEP  = (WM_USER + 4)
+Public Const PBM_STEPIT  = (WM_USER + 5)
+Public Const PBM_SETRANGE32  = (WM_USER + 6)  ' lParam = high, wParam = low
+Public Const PBM_GETRANGE  = (WM_USER + 7)  ' wParam = return (TRUE ? low : high). lParam = PPBRANGE or NULL
+Public Const PBM_GETPOS  = (WM_USER + 8)
+Public Const PBM_SETBARCOLOR  = (WM_USER + 9)  ' lParam = bar color
+Public Const PBM_SETMARQUEE  = (WM_USER + 10)
+Public Const PBM_GETSTEP  = (WM_USER + 13)
+Public Const PBM_GETBKCOLOR  = (WM_USER + 14)
+Public Const PBM_GETBARCOLOR  = (WM_USER + 15)
+Public Const PBM_SETSTATE  = (WM_USER + 16)  ' wParam = PBST_[State] (NORMAL, ERROR, PAUSED)
+Public Const PBM_GETSTATE  = (WM_USER + 17)
+Public Const PBM_SETBKCOLOR  = CCM_SETBKCOLOR  ' lParam = bkColor
+
+Public Enum ProgressState
+	PBST_NORMAL = &H001
+	PBST_ERROR = &H002
+	PBST_PAUSED = &H003
+End Enum
+
+Public Type PBRANGE
+	iLow As Long
+    iHigh As Long
+End Type
+
+
+End Module

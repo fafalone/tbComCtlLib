@@ -1,0 +1,23 @@
+Module modAnimation
+
+Public Const ANIMATE_CLASS = "SysAnimate32"
+
+Public Const ACM_OPENA As Long = (WM_USER + 100)
+Public Const ACM_OPENW As Long = (WM_USER + 103)
+Public Const ACM_OPEN As Long = ACM_OPENW
+Public Const ACM_PLAY As Long = (WM_USER + 101)
+Public Const ACM_STOP As Long = (WM_USER + 102)
+Public Const ACM_ISPLAYING As Long = (WM_USER + 104)
+
+Public Const ACN_START As Long = &H1
+Public Const ACN_STOP As Long = &H2
+
+Public Enum AnimateStyles
+	ACS_CENTER = &H0001
+	ACS_TRANSPARENT = &H0002
+	ACS_AUTOPLAY = &H0004
+	ACS_TIMER = &H0008 ' don't use threads... use timers
+End Enum
+
+
+End Module

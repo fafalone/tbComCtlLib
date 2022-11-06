@@ -1,0 +1,34 @@
+Module modIP
+
+Public Const WC_IPADDRESS = "SysIPAddress32"
+
+Public Const IPM_CLEARADDRESS  = (WM_USER + 100)  ' no parameters
+Public Const IPM_SETADDRESS  = (WM_USER + 101)  ' lparam = TCP/IP address
+Public Const IPM_GETADDRESS  = (WM_USER + 102)  ' lresult = # of non black fields.  lparam = LPDWORD for TCP/IP address
+Public Const IPM_SETRANGE  = (WM_USER + 103)  ' wparam = field, lparam = range
+Public Const IPM_SETFOCUS  = (WM_USER + 104)  ' wparam = field
+Public Const IPM_ISBLANK  = (WM_USER + 105)  ' no parameters
+
+Public Const IPN_FIRST  = (-860)  ' internet address
+Public Const IPN_LAST  = (-879)  ' internet address
+Public Const IPN_FIELDCHANGED = (IPN_FIRST - 0)
+
+Public Type NMIPADDRESS
+	hdr As NMHDR
+	iField As Long
+	iValue As Long
+End Type
+
+Public Function MAKEIPRANGE(ByVal Low As Byte, ByVal High As Byte) As Integer
+If (High And &H80) <> 0 Then
+    MAKEIPRANGE = ((High * &H100&) Or Low) Or &HFFFF0000
+Else
+    MAKEIPRANGE = (High * &H100) Or Low
+End If
+End Function
+
+Public Function MAKEIPADDRESS(b1 As Long, b2 As Long, b3 As Long, b4 As Long) As Long
+MAKEIPADDRESS = ((b1 << 24) + (b2 << 16) + (b3 << 8) + b4)
+End Function
+
+End Module

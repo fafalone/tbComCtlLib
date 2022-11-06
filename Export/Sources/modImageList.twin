@@ -1,0 +1,372 @@
+#If TB_SHELLLIB_DEFINED = 0 Then
+[ InterfaceId ("46EB5926-582E-4017-9FDF-E8998DAA0950") ]
+Interface IImageList Extends stdole.IUnknown
+    Sub Add(ByVal hbmImage As LongPtr, ByVal hbmMask As LongPtr, pi As Long)
+    Sub ReplaceIcon(ByVal i As Long, ByVal hIcon As LongPtr, pi As Long)
+    Sub SetOverlayImage(ByVal iImage As Long, ByVal iOverlay As Long)
+    Sub Replace(ByVal i As Long, ByVal hbmImage As LongPtr, ByVal hbmMask As LongPtr)
+    Sub AddMasked(ByVal hbmImage As LongPtr, ByVal crMask As Long, pi As Long)
+    Sub Draw(pimldp As IMAGELISTDRAWPARAMS)
+    Sub Remove(ByVal i As Long)
+    Sub GetIcon(ByVal i As Long, ByVal flags As IMAGELISTDRAWFLAGS, pIcon As LongPtr)
+    Sub GetImageInfo(ByVal i As Long, pImageInfo As IMAGEINFO)
+    Sub Copy(ByVal iDst As Long, ByVal pUnkSrc As stdole.IUnknown, ByVal iSrc As Long, ByVal uFlags As Long)
+    Sub Merge(ByVal i1 As Long, ByVal punk2 As stdole.IUnknown, ByVal i2 As Long, ByVal dx As Long, ByVal dy As Long, riid As UUID, ppv As any)
+    Sub Clone(riid As UUID, ppv As any)
+    Sub GetImageRect(ByVal i As Long, prc As RECT)
+    Sub GetIconSize(cx As Long, cy As Long)
+    Sub SetIconSize(ByVal cx As Long, ByVal cy As Long)
+    Sub GetImageCount(pi As Long)
+    Sub SetImageCount(ByVal uNewCount As Long)
+    Sub SetBkColor(ByVal clrBk As Long, pclr As Long)
+    Sub GetBkColor(pclr As Long)
+    Sub BeginDrag(ByVal iTrack As Long, ByVal dxHotspot As Long, ByVal dyHotspot As Long)
+    Sub EndDrag()
+    Sub DragEnter(ByVal hwndLock As LongPtr, ByVal x As Long, ByVal y As Long)
+    Sub DragLeave(ByVal hwndLock As Long)
+    Sub DragMove(ByVal x As Long, ByVal y As Long)
+    Sub SetDragCursorImage(ByVal pUnk As stdole.IUnknown, ByVal iDrag As Long, ByVal dxHotspot As Long, ByVal dyHotspot As Long)
+    Sub DragShowNolock(ByVal fShow As Long)
+    Sub GetDragImage(ppt As POINT, pptHotspot As POINT, riid As UUID, ppv As any)
+    Sub GetItemFlags(ByVal i As Long, dwFlags As Long)
+    Sub GetOverlayImage(ByVal iOverlay As Long, piIndex As Long)
+End Interface
+[ InterfaceId ("192b9d83-50fc-457b-90a0-2b82a8b5dae1") ]
+Interface IImageList2 Extends IImageList
+    [ PreserveSig ] Function Resize(ByVal cxNewIconSize As Long, ByVal cyNewIconSize As Long) As Long
+    [ PreserveSig ] Function GetOriginalSize(ByVal iImage As Long, dwFlags As ILGOSFLAGS, pcx As Long, pcy As Long) As Long
+    [ PreserveSig ] Function SetOriginalSize(ByVal iImage As Long, ByVal cx As Long, ByVal cy As Long) As Long
+    [ PreserveSig ] Function SetCallback(ByVal pUnk As stdole.IUnknown) As Long
+    [ PreserveSig ] Function GetCallback(riid As UUID, ppv As Any) As Long
+    [ PreserveSig ] Function ForceImagePresent(ByVal iImage As Long, ByVal dwFlags As ILFIPFLAGS) As Long
+    [ PreserveSig ] Function DiscardImages(ByVal iFirstImage As Long, ByVal iLastImage As Long, ByVal dwFlags As ILDIFLAGS) As Long
+    [ PreserveSig ] Function PreloadImages(pimldp As IMAGELISTDRAWPARAMS) As Long
+    [ PreserveSig ] Function GetStatistics(pils As IMAGELISTSTATS) As Long
+    [ PreserveSig ] Function Initialize(ByVal cx As Long, ByVal cy As Long, ByVal flags As Long, ByVal cInitial As Long, ByVal cGrow As Long) As Long
+    [ PreserveSig ] Function Replace2(ByVal i As Long, ByVal hbmImage As LongPtr, ByVal hbmMask As LongPtr, ByVal pUnk As stdole.IUnknown, ByVal dwFlags As Long) As Long
+    [ PreserveSig ] Function ReplaceFromImageList(ByVal i As Long, ByVal pil As IImageList, ByVal iSrc As Long, ByVal pUnk As stdole.IUnknown, ByVal dwFlags As Long) As Long
+End Interface
+[ InterfaceId ("0c733a30-2a1c-11ce-ade5-00aa0044773d") ]
+Interface ISequentialStream Extends stdole.IUnknown
+    Function Read(pv As any, ByVal cb As Long) As Long
+    Function Write(pv As any, ByVal cb As Long) As Long
+End Interface
+[ InterfaceId ("0000000c-0000-0000-C000-000000000046") ]
+Interface IStream Extends ISequentialStream
+    Function Seek(ByVal dlibMove As LongLong, ByVal dwOrigin As Long) As LongLong
+    Sub SetSize(ByVal libNewSize As LongLong)
+    Sub CopyTo(ByVal pStm As IStream, ByVal cb As LongLong, pcbRead As LongLong, pcbWritten As LongLong)
+    Sub Commit(ByVal grfCommitFlags As STGC)
+    Sub Revert()
+    Sub LockRegion(ByVal libOffset As LongLong, ByVal cb As LongLong, ByVal dwLockType As Long)
+    Sub Stat(pstatstg As STATSTG, ByVal grfStatFlag As STATFLAG)
+    Function Clone() As IStream
+End Interface
+#End If
+
+
+Module modImageList
+
+Public Enum IL_DrawStyle
+  ILD_NORMAL = &H0
+  ILD_TRANSPARENT = &H1
+  ILD_MASK = &H10
+  ILD_IMAGE = &H20
+'#If (WIN32_IE >= &H300) Then
+  ILD_ROP = &H40
+'#End If
+  ILD_BLEND25 = &H2
+  ILD_BLEND50 = &H4
+  ILD_OVERLAYMASK = &HF00
+ 
+  ILD_SELECTED = ILD_BLEND50
+  ILD_FOCUS = ILD_BLEND25
+  ILD_BLEND = ILD_BLEND50
+  ILD_PRESERVEALPHA = &H1000
+  ILD_SCALE = &H2000
+  ILD_DPISCALE = &H4000
+  ILD_ASYNC = &H8000
+End Enum
+
+Public Const ILCF_MOVE = &H0
+
+Public Enum IL_CreateFlags
+  ILC_MASK = &H1
+  ILC_COLOR = &H0
+  ILC_COLORDDB = &HFE
+  ILC_COLOR4 = &H4
+  ILC_COLOR8 = &H8
+  ILC_COLOR16 = &H10
+  ILC_COLOR24 = &H18
+  ILC_COLOR32 = &H20
+  ILC_PALETTE = &H800                  ' (no longer supported...never worked anyway)
+  '5.0
+  ILC_MIRROR = &H2000
+  ILC_PERITEMMIRROR = &H8000
+  '6.0
+  ILC_ORIGINALSIZE = &H10000
+  ILC_HIGHQUALITYSCALE = &H20000
+End Enum
+
+Public Enum ImageListColor_flags
+  CLR_NONE = &HFFFFFFFF
+  CLR_DEFAULT = &HFF000000
+  CLR_HILIGHT = CLR_DEFAULT
+End Enum
+
+Public Enum ImageTypes
+  IMAGE_BITMAP = 0
+  IMAGE_ICON = 1
+  IMAGE_CURSOR = 2
+  IMAGE_ENHMETAFILE = 3
+End Enum
+
+Public Enum LoadResourceFlags
+  LR_DEFAULTCOLOR = &H0
+  LR_MONOCHROME = &H1
+  LR_COLOR = &H2
+  LR_COPYRETURNORG = &H4
+  LR_COPYDELETEORG = &H8
+  LR_LOADFROMFILE = &H10
+  LR_LOADTRANSPARENT = &H20
+  LR_DEFAULTSIZE = &H40
+  LR_VGACOLOR = &H80
+  LR_LOADMAP3DCOLORS = &H1000
+  LR_CREATEDIBSECTION = &H2000
+  LR_COPYFROMRESOURCE = &H4000
+  LR_SHARED = &H8000&
+End Enum
+
+#If TB_SHELLLIB_DEFINED = 0 Then
+Public Enum STGM
+	STGM_DIRECT = &H00000000
+	STGM_TRANSACTED = &H00010000
+	STGM_SIMPLE = &H08000000
+	STGM_READ = &H00000000
+	STGM_WRITE = &H00000001
+	STGM_READWRITE = &H00000002
+	STGM_SHARE_DENY_NONE = &H00000040
+	STGM_SHARE_DENY_READ = &H00000030
+	STGM_SHARE_DENY_WRITE = &H00000020
+	STGM_SHARE_EXCLUSIVE = &H00000010
+	STGM_PRIORITY = &H00040000
+	STGM_DELETEONRELEASE = &H04000000
+	STGM_NOSCRATCH = &H00100000
+	STGM_CREATE = &H00001000
+	STGM_CONVERT = &H00020000
+	STGM_FAILIFTHERE = &H00000000
+	STGM_NOSNAPSHOT = &H00200000
+	STGM_DIRECT_SWMR = &H00400000
+End Enum
+Public Enum STGC
+	STGC_DEFAULT = 0
+	STGC_OVERWRITE = 1
+	STGC_ONLYIFCURRENT = 2
+	STGC_DANGEROUSLYCOMMITMERELYTODISKCACHE = 4
+	STGC_CONSOLIDATE = 8
+End Enum
+Public Enum LOCKTYPE
+	LOCK_WRITE = 1
+	LOCK_EXCLUSIVE = 2
+	LOCK_ONLYONCE = 4
+End Enum
+Public Enum STGTY
+	STGTY_STORAGE = 1
+	STGTY_STREAM = 2
+	STGTY_LOCKBYTES = 3
+	STGTY_PROPERTY = 4
+End Enum
+Public Type STATSTG
+    pwcsName As LongPtr
+    type As STGTY
+    cbSize As LongLong
+    mtime As LongLong
+    ctime As LongLong
+    atime As LongLong
+    grfMode As STGM
+    grfLocksSupported As LOCKTYPE
+    clsid As UUID
+    grfStateBits As long
+    reserved As long
+End Type
+Public Enum STATFLAG
+	STATFLAG_DEFAULT = 0
+	STATFLAG_NONAME = 1
+	STATFLAG_NOOPEN = 2
+End Enum
+Public Enum IMAGELISTDRAWFLAGS
+	ILD_NORMAL = &H00000000
+	ILD_TRANSPARENT = &H00000001
+	ILD_BLEND25 = &H00000002
+	ILD_FOCUS = &H00000002 'ILD_BLEND25,
+	ILD_BLEND50 = &H00000004
+	ILD_SELECTED = &H00000004 'ILD_BLEND50,
+	ILD_BLEND = &H00000004 'ILD_BLEND50,
+	ILD_MASK = &H00000010
+	ILD_IMAGE = &H00000020
+	ILD_ROP = &H00000040 '(WIN32_IE >= &H300)
+	ILD_OVERLAYMASK = &H00000F00
+	ILD_PRESERVEALPHA = &H00001000
+	ILD_SCALE = &H00002000
+	ILD_DPISCALE = &H00004000
+	ILD_ASYNC = &H00008000
+End Enum
+Public Enum IMAGELISTSTATEFLAGS
+	ILS_NORMAL = &H00000000
+	ILS_GLOW = &H00000001 'Not supported
+	ILS_SHADOW = &H00000002 'Not supported
+	ILS_SATURATE = &H00000004
+	ILS_ALPHA = &H00000008
+End Enum
+Public Enum ILRFLAGS
+	ILR_DEFAULT = &H0000
+	ILR_HORIZONTAL_LEFT = &H0000
+	ILR_HORIZONTAL_CENTER = &H0001
+	ILR_HORIZONTAL_RIGHT = &H0002
+	ILR_VERTICAL_TOP = &H0000
+	ILR_VERTICAL_CENTER = &H0010
+	ILR_VERTICAL_BOTTOM = &H0020
+	ILR_SCALE_CLIP = &H0000
+	ILR_SCALE_ASPECTRATIO = &H0100
+End Enum
+Public Enum ILGOSFLAGS
+	ILGOS_ALWAYS = &H00000000 ' always get the original size (can be slow)
+	ILGOS_FROMSTANDBY = &H00000001 ' only if present or on standby
+End Enum
+Public Enum ILFIPFLAGS
+	ILFIP_ALWAYS = &H00000000 ' always get the image (can be slow)
+	ILFIP_FROMSTANDBY = &H00000001 ' only if on standby
+End Enum
+Public Enum ILDIFLAGS
+	ILDI_PURGE = &H00000001 ' discard and purge
+	ILDI_STANDBY = &H00000002 ' discard to standby list
+	ILDI_RESETACCESS = &H00000004 ' reset "has been accessed" flag
+	ILDI_QUERYACCESS = &H00000008 ' ask whether access flag is set (but do not reset)
+End Enum
+Public Enum ILPFLAGS
+    ILP_NORMAL = 0 'Writes Or reads the stream using New sematics for this version of comctl32
+    ILP_DOWNLEVEL = 1
+End Enum
+
+Public Type IMAGELISTSTATS
+	cbSize As Long
+	cAlloc As Long ' number of images allocated
+	cUsed As Long ' number of images in use
+	cStandby As Long ' number of standby images
+End Type
+
+Public Enum RASTEROPFLAGS
+	SRCAND = &H8800C6
+	SRCCOPY = &HCC0020
+	SRCINVERT = &H660046
+	SRCPAINT = &HEE0086
+	BLACKNESS = &H42
+	CAPTUREBLT = &H40000000
+	DSTINVERT = &H550009
+	MERGECOPY = &HC000CA
+	MERGEPAINT = &HBB0226
+	NOMIRRORBITMAP = &H80000000
+	NOTSRCCOPY = &H330008
+	NOTSRCERASE = &H1100A6
+	PATCOPY = &HF00021
+	PATINVERT = &H5A0049
+	PATPAINT = &HFB0A09
+	SRCERASE = &H440328
+	WHITENESS = &HFF0062
+End Enum
+Public Type IMAGELISTDRAWPARAMS
+	cbSize As Long
+	himl As LongPtr
+	i As Long
+	hdcDst As LongPtr
+	x As Long
+	y As Long
+	cx As Long
+	cy As Long
+	xBitmap As Long ' x offest from the upperleft of bitmap
+	yBitmap As Long ' y offset from the upperleft of bitmap
+	rgbBk As Long
+	rgbFg As Long
+	fStyle As IMAGELISTDRAWFLAGS
+	dwRop As RASTEROPFLAGS
+	fState As IMAGELISTSTATEFLAGS
+	Frame As Long
+	crEffect As Long
+End Type
+Public Type IMAGEINFO
+	hbmImage As LongPtr
+	hbmMask As LongPtr
+	Unused1 As Long
+	Unused2 As Long
+	rcImage As RECT
+End Type
+Public Enum ILIMAGEQUALITY
+	ILIF_ALPHA = &H00000001
+	ILIF_LOWQUALITY = &H00000002
+End Enum
+Public Enum ILDRAWRESULTS
+	ILDRF_IMAGELOWQUALITY = &H00000001
+	ILDRF_OVERLAYLOWQUALITY = &H00000010
+End Enum
+#End If
+
+Public Declare PtrSafe Function ImageList_Add Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal hbmImage As LongPtr, ByVal hBMMask As LongPtr) As Long
+Public Declare PtrSafe Function ImageList_AddMasked Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal hbmImage As LongPtr, ByVal crMask As Long) As Long
+Public Declare PtrSafe Function ImageList_BeginDrag Lib "comctl32.dll" (ByVal himlTrack As LongPtr, ByVal iTrack As Long, ByVal dxHotspot As Long, ByVal dyHotspot As Long) As Long
+Public Declare PtrSafe Function ImageList_CoCreateInstance Lib "comctl32.dll " (refclsid As UUID, ByVal pUnkOuter As Long, riid As UUID, ppv As Any) As Long
+Public Declare PtrSafe Function ImageList_Copy Lib "comctl32.dll" (ByVal himlDst As LongPtr, ByVal iDst As Long, ByVal himlSrc As LongPtr, ByVal iSrc As Long, ByVal uFlags As Long) As Long
+Public Declare PtrSafe Function ImageList_Create Lib "comctl32.dll" (ByVal cx As Long, ByVal cy As Long, ByVal Flags As IL_CreateFlags, ByVal cInitial As Long, ByVal cGrow As Long) As LongPtr
+Public Declare PtrSafe Function ImageList_Destroy Lib "comctl32.dll" (ByVal himl As LongPtr) As Long
+Public Declare PtrSafe Function ImageList_DragEnter Lib "comctl32.dll" (ByVal hWndLock As LongPtr, ByVal X As Long, ByVal Y As Long) As Long
+Public Declare PtrSafe Function ImageList_DragLeave Lib "comctl32.dll" (ByVal hWndLock As LongPtr) As Long
+Public Declare PtrSafe Function ImageList_DragMove Lib "comctl32.dll" (ByVal X As Long, ByVal Y As Long) As Long
+Public Declare PtrSafe Function ImageList_DragShowNolock Lib "comctl32.dll" (ByVal fShow As Long) As Long
+Public Declare PtrSafe Function ImageList_Draw Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal i As Long, ByVal hdcDst As LongPtr, ByVal X As Long, ByVal Y As Long, ByVal fStyle As IMAGELISTDRAWFLAGS) As Long
+Public Declare PtrSafe Function ImageList_DrawEx Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal i As Long, ByVal hdcDst As LongPtr, ByVal X As Long, ByVal Y As Long, ByVal DX As Long, ByVal DY As Long, ByVal rgbBk As Long, ByVal rgbFg As Long, ByVal fStyle As IMAGELISTDRAWFLAGS) As Long
+Public Declare PtrSafe Function ImageList_DrawIndirect Lib "comctl32.dll" (pimldp As IMAGELISTDRAWPARAMS) As Long
+Public Declare PtrSafe Function ImageList_Duplicate Lib "comctl32.dll" (ByVal himl As LongPtr) As LongPtr
+Public Declare PtrSafe Sub ImageList_EndDrag Lib "comctl32.dll" ()
+Public Declare PtrSafe Function ImageList_GetBkColor Lib "comctl32.dll" (ByVal himl As LongPtr) As Long
+Public Declare PtrSafe Function ImageList_GetDragImage Lib "comctl32.dll" (ppt As POINT, pptHotspot As POINT) As LongPtr
+Public Declare PtrSafe Function ImageList_GetIcon Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal i As Long, ByVal Flags As IMAGELISTDRAWFLAGS) As LongPtr
+Public Declare PtrSafe Function ImageList_GetIconSize Lib "comctl32.dll" (ByVal himl As LongPtr, lpcx As Long, lpcy As Long) As Long
+Public Declare PtrSafe Function ImageList_GetImageCount Lib "comctl32.dll" (ByVal himl As LongPtr) As Long
+Public Declare PtrSafe Function ImageList_GetImageInfo Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal i As Long, pImageInfo As IMAGEINFO) As Long
+Public Declare PtrSafe Function ImageList_LoadImage Lib "comctl32.dll" Alias "ImageList_LoadImageW" (ByVal hi As LongPtr, ByVal lpbmp As LongPtr, ByVal CX As Long, ByVal cGrow As Long, ByVal crMask As Long, ByVal uType As ImageTypes, ByVal uFlags As LoadResourceFlags) As LongPtr
+Public Declare PtrSafe Function ImageList_LoadImageA Lib "comctl32.dll" (ByVal hi As LongPtr, ByVal lpbmp As LongPtr, ByVal CX As Long, ByVal cGrow As Long, ByVal crMask As Long, ByVal uType As ImageTypes, ByVal uFlags As LoadResourceFlags) As LongPtr
+Public Declare PtrSafe Function ImageList_Merge Lib "comctl32.dll" (ByVal himl1 As LongPtr, ByVal i1 As Long, ByVal himl2 As LongPtr, ByVal i2 As Long, ByVal DX As Long, ByVal DY As Long) As LongPtr
+Public Declare PtrSafe Function ImageList_Read Lib "comctl32.dll" (ByVal pstm As IStream) As LongPtr
+Public Declare PtrSafe Function ImageList_ReadEx Lib "comctl32.dll" (ByVal dwFlags As ILPFLAGS, ByVal pstm As IStream, riid As UUID, ppv As Any) As Long
+Public Declare PtrSafe Function ImageList_Remove Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal i As Long) As Long
+Public Declare PtrSafe Function ImageList_Replace Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal i As Long, ByVal hbmImage As LongPtr, ByVal hBMMask As LongPtr) As Long
+Public Declare PtrSafe Function ImageList_ReplaceIcon Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal i As Long, ByVal hIcon As LongPtr) As Long
+Public Declare PtrSafe Function ImageList_SetBkColor Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal clrBk As Long) As Long
+Public Declare PtrSafe Function ImageList_SetIconSize Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal CX As Long, ByVal CY As Long) As Long
+Public Declare PtrSafe Function ImageList_SetImageCount Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal uNewCount As Long) As Long
+Public Declare PtrSafe Function ImageList_SetDragCursorImage Lib "comctl32.dll" (ByVal himlDrag As LongPtr, ByVal iDrag As Long, ByVal dxHotspot As Long, ByVal dyHotspot As Long) As Long
+Public Declare PtrSafe Function ImageList_SetOverlayImage Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal iImage As Long, ByVal iOverlay As Long) As Long
+Public Declare PtrSafe Function ImageList_Write Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal pstm As IStream) As Long
+Public Declare PtrSafe Function ImageList_WriteEx Lib "comctl32.dll" (ByVal himl As LongPtr, ByVal dwFlags As ILPFLAGS, ByVal pstm As IStream) As Long
+Public Declare PtrSafe Function HIMAGELIST_QueryInterface Lib "comctl32.dll" (ByVal himl As LongPtr, riid As UUID, ppv As Any) As Long
+
+
+Public Function ImageList_AddIcon(himl As LongPtr, hIcon As LongPtr) As Long
+  ImageList_AddIcon = ImageList_ReplaceIcon(himl, -1, hIcon)
+End Function
+
+Public Function ImageList_RemoveAll(himl As LongPtr) As Long
+  ImageList_RemoveAll = ImageList_Remove(himl, -1)
+End Function
+
+' HINSTANCE hi - This parameter is not used and should always be zero.
+Public Function ImageList_ExtractIcon(hi As LongPtr, himl As LongPtr, i As Long) As LongPtr
+  ImageList_ExtractIcon = ImageList_GetIcon(himl, i, 0)
+End Function
+
+Public Function ImageList_LoadBitmap(hi As LongPtr, lpbmp As LongPtr, CX As Long, cGrow As Long, crMask As Long) As LongPtr
+  ImageList_LoadBitmap = ImageList_LoadImage(hi, lpbmp, CX, cGrow, crMask, IMAGE_BITMAP, 0)
+End Function
+
+
+
+End Module
