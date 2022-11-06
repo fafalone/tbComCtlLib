@@ -43,7 +43,7 @@ Public Enum DTSTYLES
     DTS_SHORTDATEFORMAT = &H0
     DTS_UPDOWN = &H1
     DTS_SHOWNONE = &H2
-    DTS_LONGDATEFORMAT = &H4
+    DTS_LongDATEFORMAT = &H4
     DTS_TIMEFORMAT = &H9
     DTS_APPCANPARSE = &H10
     DTS_RIGHTALIGN = &H20
@@ -51,11 +51,11 @@ Public Enum DTSTYLES
 End Enum
 
 Public Type DATETIMEPICKERINFO
-	cbSize As LONG
+	cbSize As Long
 	rcCheck As RECT
-	stateCheck As LONG
+	stateCheck As Long
 	rcButton As RECT
-	stateButton As LONG
+	stateButton As Long
 	hwndEdit As LongPtr
 	hwndUD As LongPtr
 	hwndDropDown As LongPtr

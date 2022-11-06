@@ -365,7 +365,7 @@ Public Enum TBM_Mask
 End Enum
 
 Public Type TBMETRICS
-	cbSize As LONG
+	cbSize As Long
 	dwMask As TBM_Mask
 	cxPad As Long ' PAD
 	cyPad As Long

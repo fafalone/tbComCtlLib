@@ -90,7 +90,7 @@ End Enum
 
 Public Type NMTRBTHUMBPOSCHANGING
 	hdr As NMHDR
-	dwPos As LONG
+	dwPos As Long
 	nReason As TrackBarNotifications
 End Type
 

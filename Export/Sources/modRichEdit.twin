@@ -286,7 +286,7 @@ Public Enum RichEdit_IMECTFlags
     ICT_RESULTREADSTR = 1
 End Enum
 Public Type IMECOMPTEXT
-	cb As LONG ' count of bytes in the output buffer.
+	cb As Long ' count of bytes in the output buffer.
 	flags As RichEdit_IMECTFlags ' value specifying the composition string type.
 End Type
 
@@ -320,14 +320,14 @@ Public Const VM_PAGE  = 9  ' Screen page view (not print layout)
 
 [ PackingAlignment (4) ]
 Public Type TABLEROWPARMS							 ' EM_INSERTTABLE wparam is a (TABLEROWPARMS *)
-	cbRow As BYTE ' Count of bytes in this structure
-	cbCell As BYTE ' Count of bytes in TABLECELLPARMS
-	cCell As BYTE ' Count of cells
-	cRow As BYTE ' Count of rows
-	dxCellMargin As LONG ' Cell left/right margin (\trgaph)
-	dxIndent As LONG ' Row left (right if fRTL indent (similar to \trleft)
-	dyHeight As LONG ' Row height (\trrh)
-    fBitfield As Byte
+	cbRow As Byte ' Count of bytes in this structure
+	cbCell As Byte ' Count of bytes in TABLECELLPARMS
+	cCell As Byte ' Count of cells
+	cRow As Byte ' Count of rows
+	dxCellMargin As Long ' Cell left/right margin (\trgaph)
+	dxIndent As Long ' Row left (right if fRTL indent (similar to \trleft)
+	dyHeight As Long ' Row height (\trrh)
+    fBitfield As Long
 	' nAlignment:3 As Long ' Row alignment (like PARAFORMAT::bAlignment, \trql, trqr, \trqc)
 	' fRTL:1 As Long ' Display cells in RTL order (\rtlrow)
 	' fKeep:1 As Long ' Keep row together (\trkeep}
@@ -335,16 +335,16 @@ Public Type TABLEROWPARMS							 ' EM_INSERTTABLE wparam is a (TABLEROWPARMS *)
 	' fWrap:1 As Long ' Wrap text to right/left (depending on bAlignment)
 	' ' (see \tdfrmtxtLeftN, \tdfrmtxtRightN)
 	' fIdentCells:1 As Long ' lparam points at single struct valid for all cells
-	cpStartRow As LONG ' cp where to insert table (-1 for selection cp)
+	cpStartRow As Long ' cp where to insert table (-1 for selection cp)
 	'    (can be used for either TRD by EM_GETTABLEPARMS)
-	bTableLevel As BYTE ' Table nesting level (EM_GETTABLEPARMS only)
-	iCell As BYTE ' Index of cell to insert/delete (EM_SETTABLEPARMS only)
+	bTableLevel As Byte ' Table nesting level (EM_GETTABLEPARMS only)
+	iCell As Byte ' Index of cell to insert/delete (EM_SETTABLEPARMS only)
 End Type
 
 [ PackingAlignment (4) ]
 Public Type TABLECELLPARMS							 ' EM_INSERTTABLE lparam is a (TABLECELLPARMS *)
-	dxWidth As LONG ' Cell width (\cellx)
-    fBitfield As Byte
+	dxWidth As Long ' Cell width (\cellx)
+    fBitfield As Integer
 	' nVertAlign:2 As Long ' Vertical alignment (0/1/2 = top/center/bottom
 	' '    \clvertalt (def), \clvertalc, \clvertalb)
 	' fMergeTop:1 As Long ' Top cell for vertical merge (\clvmgf)
@@ -394,10 +394,10 @@ Public Enum RichEdit_TouchOptions
 End Enum
 
 Public Type RICHEDIT_IMAGE_PARAMETERS
-	xWidth As LONG ' Units are HIMETRIC
-	yHeight As LONG ' Units are HIMETRIC
-	Ascent As LONG ' Units are HIMETRIC
-	Type As LONG ' Valid values are TA_TOP, TA_BOTTOM and TA_BASELINE
+	xWidth As Long ' Units are HIMETRIC
+	yHeight As Long ' Units are HIMETRIC
+	Ascent As Long ' Units are HIMETRIC
+	Type As Long ' Valid values are TA_TOP, TA_BOTTOM and TA_BASELINE
 	pwszAlternateText As LongPtr
 	pIStream As IStream
 End Type
@@ -600,11 +600,11 @@ Public Type CHARFORMATA
 	cbSize As Long
 	dwMask As CFMT_Mask
 	dwEffects As CFMT_Effects
-	yHeight As LONG
-	yOffset As LONG
+	yHeight As Long
+	yOffset As Long
 	crTextColor As Long
-	bCharSet As BYTE
-	bPitchAndFamily As BYTE
+	bCharSet As Byte
+	bPitchAndFamily As Byte
 	szFaceName(0 To (32 - 1)) As Byte
 End Type
 
@@ -613,11 +613,11 @@ Public Type CHARFORMATW
 	cbSize As Long
 	dwMask As CFMT_Mask
 	dwEffects As CFMT_Effects
-	yHeight As LONG
-	yOffset As LONG
+	yHeight As Long
+	yOffset As Long
 	crTextColor As Long
-	bCharSet As BYTE
-	bPitchAndFamily As BYTE
+	bCharSet As Byte
+	bPitchAndFamily As Byte
 	szFaceName(0 To (32 - 1)) As Integer
 End Type
 
@@ -627,11 +627,11 @@ Public Type CHARFORMAT2W
 	cbSize As Long
 	dwMask As CFMT_Mask
 	dwEffects As CFMT_Effects
-	yHeight As LONG
-	yOffset As LONG ' > 0 for superscript, < 0 for subscript 
+	yHeight As Long
+	yOffset As Long ' > 0 for superscript, < 0 for subscript 
 	crTextColor As Long
-	bCharSet As BYTE
-	bPitchAndFamily As BYTE
+	bCharSet As Byte
+	bPitchAndFamily As Byte
 	szFaceName(0 To (32 - 1)) As Integer
 	wWeight As Long ' Font weight (LOGFONT value)        
 	sSpacing As Integer ' Amount to space between letters    
@@ -641,11 +641,11 @@ Public Type CHARFORMAT2W
 	dwCookie As Long ' Client cookie opaque to RichEdit
 	sStyle As Integer ' Style handle                     
 	wKerning As Long ' Twip size above which to kern char pair
-	bUnderlineType As BYTE ' Underline type                    
-	bAnimation As BYTE ' Animated text like marching ants 
-	bRevAuthor As BYTE ' Revision author index            
+	bUnderlineType As Byte ' Underline type                    
+	bAnimation As Byte ' Animated text like marching ants 
+	bRevAuthor As Byte ' Revision author index            
 	'#if (_RICHEDIT_VER >== &H0800 As 
-	bUnderlineColor As BYTE ' Underline color -- This would be a padding byte if not RichEd = &H800, so can be left in
+	bUnderlineColor As Byte ' Underline color -- This would be a padding byte if not RichEd = &H800, so can be left in
 End Type
 
 [ PackingAlignment (4) ]
@@ -653,11 +653,11 @@ Public Type CHARFORMAT2A
 	cbSize As Long
 	dwMask As CFMT_Mask
 	dwEffects As CFMT_Effects
-	yHeight As LONG
-	yOffset As LONG ' > 0 for superscript, < 0 for subscript 
+	yHeight As Long
+	yOffset As Long ' > 0 for superscript, < 0 for subscript 
 	crTextColor As Long
-	bCharSet As BYTE
-	bPitchAndFamily As BYTE
+	bCharSet As Byte
+	bPitchAndFamily As Byte
 	szFaceName(0 To (32 - 1)) As Byte
 	wWeight As Long ' Font weight (LOGFONT value)        
 	sSpacing As Integer ' Amount to space between letters    
@@ -667,22 +667,22 @@ Public Type CHARFORMAT2A
 	dwCookie As Long ' Client cookie opaque to RichEdit
 	sStyle As Integer ' Style handle                     
 	wKerning As Long ' Twip size above which to kern char pair
-	bUnderlineType As BYTE ' Underline type                    
-	bAnimation As BYTE ' Animated text like marching ants 
-	bRevAuthor As BYTE ' Revision author index            
+	bUnderlineType As Byte ' Underline type                    
+	bAnimation As Byte ' Animated text like marching ants 
+	bRevAuthor As Byte ' Revision author index            
 	'#if (_RICHEDIT_VER >== &H0800 As 
-	bUnderlineColor As BYTE ' Underline color -- This would be a padding byte if not RichEd = &H800, so can be left in
+	bUnderlineColor As Byte ' Underline color -- This would be a padding byte if not RichEd = &H800, so can be left in
 End Type
 
 Public Enum RichEdit_UnderlineTypes
 	CFU_CF1UNDERLINE = &HFF  ' Map charformat's bit underline to CF2
 	CFU_INVERT = &HFE  ' For IME composition fake a selection
-	CFU_UNDERLINETHICKLONGDASH = 18  ' (*) display as dash
+	CFU_UNDERLINETHICKLongDASH = 18  ' (*) display as dash
 	CFU_UNDERLINETHICKDOTTED = 17  ' (*) display as dot
 	CFU_UNDERLINETHICKDASHDOTDOT = 16  ' (*) display as dash dot dot
 	CFU_UNDERLINETHICKDASHDOT = 15  ' (*) display as dash dot
 	CFU_UNDERLINETHICKDASH = 14  ' (*) display as dash
-	CFU_UNDERLINELONGDASH = 13  ' (*) display as dash
+	CFU_UNDERLINELongDASH = 13  ' (*) display as dash
 	CFU_UNDERLINEHEAVYWAVE = 12  ' (*) display as wave
 	CFU_UNDERLINEDOUBLEWAVE = 11  ' (*) display as wave
 	CFU_UNDERLINEHAIRLINE = 10  ' (*) display as single
@@ -723,8 +723,8 @@ Public Enum RichEdit_CharFmtFlags
 End Enum
 
 Public Type CHARRANGE
-	cpMin As LONG
-	cpMax As LONG
+	cpMin As Long
+	cpMax As Long
 End Type
 
 [ PackingAlignment (4) ]
@@ -815,12 +815,12 @@ Public Type PARAFORMAT
 	dwMask As RichEdit_ParagraphFormatMask
 	wNumbering As Integer
 	wEffects As Integer
-	dxStartIndent As LONG
-	dxRightIndent As LONG
-	dxOffset As LONG
+	dxStartIndent As Long
+	dxRightIndent As Long
+	dxOffset As Long
 	wAlignment As Integer
 	cTabCount As Integer
-	rgxTabs(0 To (MAX_TAB_STOPS - 1)) As LONG
+	rgxTabs(0 To (MAX_TAB_STOPS - 1)) As Long
 End Type
 [ PackingAlignment (4) ]
 Public Type PARAFORMAT2
@@ -828,18 +828,18 @@ Public Type PARAFORMAT2
 	dwMask As RichEdit_ParagraphFormatMask
 	wNumbering As Integer
 	wEffects As Integer
-	dxStartIndent As LONG
-	dxRightIndent As LONG
-	dxOffset As LONG
+	dxStartIndent As Long
+	dxRightIndent As Long
+	dxOffset As Long
 	wAlignment As Integer
 	cTabCount As Integer
-	rgxTabs(0 To (MAX_TAB_STOPS - 1)) As LONG
-	dySpaceBefore As LONG ' Vertical spacing before para         
-	dySpaceAfter As LONG ' Vertical spacing after para            
-	dyLineSpacing As LONG ' Line spacing depending on Rule        
+	rgxTabs(0 To (MAX_TAB_STOPS - 1)) As Long
+	dySpaceBefore As Long ' Vertical spacing before para         
+	dySpaceAfter As Long ' Vertical spacing after para            
+	dyLineSpacing As Long ' Line spacing depending on Rule        
 	sStyle As Integer ' Style handle                         
-	bLineSpacingRule As BYTE ' Rule for line spacing (see tom.doc)    
-	bOutlineLevel As BYTE ' Outline Level                        
+	bLineSpacingRule As Byte ' Rule for line spacing (see tom.doc)    
+	bOutlineLevel As Byte ' Outline Level                        
 	wShadingWeight As Integer ' Shading in hundredths of a per cent    
 	wShadingStyle As Integer ' Byte 0: style, nib 2: cfpat, 3: cbpat
 	wNumberingStart As Integer ' Starting value for numbering             
@@ -1108,7 +1108,7 @@ Public Enum RichEdit_GetTextLengthExFlags
 	GTL_PRECISE = 2  ' Compute a precise answer
 	GTL_CLOSE = 4  ' Fast computation of a "close" answer
 	GTL_NUMCHARS = 8  ' Return number of characters
-	GTL_NUMBYTES = 16  ' Return number of _bytes_
+	GTL_NUMByteS = 16  ' Return number of _bytes_
 End Enum
 [ PackingAlignment (4) ]
 Public Type GETTEXTLENGTHEX

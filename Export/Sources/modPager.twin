@@ -65,10 +65,10 @@ Public Type NMPGSCROLL
 	hdr As NMHDR
 	fwKeys As Integer
 	rcParent As RECT ' Contains Parent Window Rect
-	iDir As LONG ' Scrolling Direction
-	iXpos As LONG ' Horizontal scroll position
-	iYpos As LONG ' Vertical scroll position
-	iScroll As LONG ' [in/out] Amount to scroll
+	iDir As Long ' Scrolling Direction
+	iXpos As Long ' Horizontal scroll position
+	iYpos As Long ' Vertical scroll position
+	iScroll As Long ' [in/out] Amount to scroll
 End Type
 
 Public Type NMPGCALCSIZE

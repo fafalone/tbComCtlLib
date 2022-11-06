@@ -94,7 +94,7 @@ Public Enum MonthCalGridInfoFlags
 End Enum
 
 Public Type MCGRIDINFO
-	cbSize As LONG
+	cbSize As Long
 	dwPart As MonthCalGridInfoPart
 	dwFlags As MonthCalGridInfoFlags
 	iCalendar As Long
@@ -131,14 +131,14 @@ Public Enum MCHT_Flags
 	MCHT_CALENDARDATEMAX = (MCHT_CALENDAR Or &H0005)
 End Enum
 Public Type MCHITTESTINFO
-	cbSize As LONG
+	cbSize As Long
 	pt As POINT
 	uHit As MCHT_Flags ' out param
 	st As SYSTEMTIME
 	rc As RECT
-	iOffset As LONG
-	iRow As LONG
-	iCol As LONG
+	iOffset As Long
+	iRow As Long
+	iCol As Long
 End Type
 
 Public Type NMSELCHANGE

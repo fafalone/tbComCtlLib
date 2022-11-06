@@ -38,8 +38,8 @@ Public Const UDM_GETUNICODEFORMAT  = CCM_GETUNICODEFORMAT
 
 
 Public Type UDACCEL
-	nSec As LONG
-	nInc As LONG
+	nSec As Long
+	nInc As Long
 End Type
 
 Public Const UD_MAXVAL As Integer = &H7fff
@@ -47,8 +47,8 @@ Public Const UD_MINVAL As Integer = &H8000
 
 Public Type NMUPDOWN
 	hdr As NMHDR
-	iPos As LONG
-	iDelta As LONG
+	iPos As Long
+	iDelta As Long
 End Type
 
 Public Declare PtrSafe Function CreateUpDownControl Lib "comctl32" (ByVal dwStyle As UpDownStyles, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, _

@@ -88,7 +88,7 @@ Public Enum ReBar_IM
 End Enum
 
 Public Type REBARINFO
-	cbSize As LONG
+	cbSize As Long
 	fMask As ReBar_IM
 	himl As LongPtr
 End Type
@@ -246,7 +246,7 @@ End Enum
 Public Type RBHITTESTINFO
 	pt As POINT
 	flags As ReBar_HitTestFlags
-	iBand As LONG
+	iBand As Long
 End Type
 
 End Module
