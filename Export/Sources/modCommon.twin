@@ -131,7 +131,6 @@ Public Declare PtrSafe Function SetWindowPos Lib "user32" (ByVal hWnd As LongPtr
 
 Public Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal hWnd As LongPtr, lpRect As RECT) As Long
 Public Declare PtrSafe Function GetClientRect Lib "user32" (ByVal hWnd As LongPtr, lpRect As RECT) As Long
-Public Declare PtrSafe Function SetWindowTheme Lib "uxtheme" (ByVal hWnd As LongPtr, ByVal pszSubAppName As LongPtr, ByVal pszSubIdList As LongPtr) As Long
 
 Public Enum ICC_CLASS
     ICC_LISTVIEW_CLASSES = &H1&
