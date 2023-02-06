@@ -92,7 +92,7 @@ Public Enum Tooltip_Flags
 	TTF_TRACK = &H0020
 	TTF_ABSOLUTE = &H0080
 	TTF_TRANSPARENT = &H0100
-	TTF_DI_SETITEM = &H8000 ' valid only on the TTN_NEEDTEXT callback
+	TTF_DI_SETITEM = &H8000& ' valid only on the TTN_NEEDTEXT callback
 End Enum
 
 Public Enum Tooltip_DelayTimeFlags

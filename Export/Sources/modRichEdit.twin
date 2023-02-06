@@ -443,7 +443,7 @@ Public Enum RichEdit_EventNotifiyMasks
 End Enum
 
 Public Enum RichEdit_ControlStyles
-	ES_SAVESEL = &H00008000
+	ES_SAVESEL = &H00008000&
 	ES_SUNKEN = &H00004000
 	ES_DISABLENOSCROLL = &H00002000
 '  Same as WS_MAXIMIZE, but that doesn't make sense so we re-use the value
@@ -465,7 +465,7 @@ Public Enum RichEdit_ControlOptions
 	ECO_NOHIDESEL = &H00000100
 	ECO_READONLY = &H00000800
 	ECO_WANTRETURN = &H00001000
-	ECO_SAVESEL = &H00008000
+	ECO_SAVESEL = &H00008000&
 	ECO_SELECTIONBAR = &H01000000
 	ECO_VERTICAL = &H00400000  ' FE specific
 End Enum
@@ -538,7 +538,7 @@ Public Enum CFMT_Mask
 	CFM_IMPRINT = &H00001000  ' (*)
 	CFM_DISABLED = &H00002000
 	CFM_REVISED = &H00004000
-	CFM_REVAUTHOR = &H00008000
+	CFM_REVAUTHOR = &H00008000&
 	CFE_SUBSCRIPT = &H00010000  ' Superscript and subscript are
 	CFE_SUPERSCRIPT = &H00020000  '    mutually exclusive
 	CFM_ANIMATION = &H00040000  ' (*)
@@ -754,7 +754,7 @@ Public Enum RichEdit_StreamFormats
 	SF_USECODEPAGE = &H0020  ' CodePage given by high word
 	SF_NCRFORNONASCII = &H40  ' Output \uN for nonASCII
 	SFF_WRITEXTRAPAR = &H80  ' Output \par at end
-	SFF_SELECTION = &H8000
+	SFF_SELECTION = &H8000&
 '  Flag telling stream operations to ignore some FE control words
 '  having to do with FE word breaking and horiz vs vertical text.
 '  Not used in RichEdit 2.0 and later
@@ -867,7 +867,7 @@ Public Enum RichEdit_ParagraphFormatMask
 	PFM_SHADING = &H00001000  ' (*)
 	PFM_NUMBERINGSTYLE = &H00002000  ' RE 3.0
 	PFM_NUMBERINGTAB = &H00004000  ' RE 3.0
-	PFM_NUMBERINGSTART = &H00008000  ' RE 3.0
+	PFM_NUMBERINGSTART = &H00008000&  ' RE 3.0
 	PFM_RTLPARA = &H00010000
 	PFM_KEEP = &H00020000  ' (*)
 	PFM_KEEPNEXT = &H00040000  ' (*)
@@ -920,7 +920,7 @@ Public Enum RichEdit_ParagraphNumOpts
 	PFNS_PERIOD = &H200  ' tomListPeriod/256, e.g.,       1.
 	PFNS_PLAIN = &H300  ' tomListPlain/256, e.g.,          1
 	PFNS_NONUMBER = &H400  ' Used for continuation w/o number
-	PFNS_NEWNUMBER = &H8000  ' Start new number with wNumberingStart
+	PFNS_NEWNUMBER = &H8000&  ' Start new number with wNumberingStart
 '  (can be combined with other PFNS_xxx)
 End Enum
 

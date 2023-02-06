@@ -80,7 +80,7 @@ Public Enum ReBar_Styles
 	RBS_REGISTERDROP = &H1000
 	RBS_AUTOSIZE = &H2000
 	RBS_VERTICALGRIPPER = &H4000 ' this always has the vertical gripper (default for horizontal mode)
-	RBS_DBLCLKTOGGLE = &H8000
+	RBS_DBLCLKTOGGLE = &H8000&
 End Enum
 
 Public Enum ReBar_IM
