@@ -9,6 +9,6 @@ You can browse individual source files in the Export folder. The project source 
 
 Note: For RichEdit OLE Extensions, add [tbShellLib](https://github.com/fafalone/tbShellLib). 
 
-**Update (Feb 06 2022)**: Version 1.2 fixes numerous hex literals that were defined in a way that would cause sign issues in bitwise operations.
+**Update (Feb 06 2023)**: Version 1.2 fixes numerous hex literals that were defined in a way that would cause sign issues in bitwise operations.
 
 **Update (Nov 17 2022)**: Version 1.1 adds all Visual Styles APIs, Enums, Stucts, and Consts.
