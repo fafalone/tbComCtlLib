@@ -385,7 +385,7 @@ Public Type CHOOSEFONTA
 	nFontType As Integer ' same value reported to the EnumFonts
 	'   call back with the extra FONTTYPE_
 	'   bits added
-	___MISSING_ALIGNMENT__ As Integer
+	MISSING_ALIGNMENT As Integer
 	nSizeMin As Long ' minimum pt size allowed &
 	nSizeMax As Long ' max pt size allowed if
 	'   CF_LIMITSIZE is used
@@ -431,7 +431,7 @@ Public Type CHOOSEFONT
 	nFontType As Integer ' same value reported to the EnumFonts
 	'   call back with the extra FONTTYPE_
 	'   bits added
-	___MISSING_ALIGNMENT__ As Integer
+	MISSING_ALIGNMENT As Integer
 	nSizeMin As Long ' minimum pt size allowed &
 	nSizeMax As Long ' max pt size allowed if
 	'   CF_LIMITSIZE is used
