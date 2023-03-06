@@ -87,6 +87,34 @@ Public Type PSHNOTIFY
     lParam As LongPtr
 End Type
 
+Public Type PROPSHEETHEADER
+    dwSize As Long
+    dwFlags As PropSheetHeaderFlags
+    hwndParent As LongPtr
+    hInstance As LongPtr
+    hIcon As LongPtr
+    pszCaption As LongPtr
+    nPages As Long
+    nStartPage As LongPtr
+    ppsp As LongPtr
+End Type
+Public Type PROPSHEETHEADER_V2
+    dwSize As Long
+    dwFlags As PropSheetHeaderFlags
+    hwndParent As LongPtr
+    hInstance As LongPtr
+    hIcon As LongPtr
+    pszCaption As LongPtr
+    nPages As Long
+    nStartPage As LongPtr
+    ppsp As LongPtr
+    hbmWatermark As LongPtr
+    hplWatermark As LongPtr
+    hbmHeader As LongPtr
+End Type
+
+
+
 Public Enum PSNOTIFYCODES
 	PSN_FIRST = (-200)
 	PSN_LAST = (-299)
