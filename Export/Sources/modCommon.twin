@@ -26,6 +26,10 @@ Public Type UUID
 	Data3 As Integer
 	Data4(0 To 7) As Byte
 End Type
+Public Type PROPERTYKEY
+	fmtid As UUID
+	pid As Long
+End Type
 
 Public Type RECT
   Left As Long
@@ -74,9 +78,6 @@ Public Enum GWL_nIndex
   GWL_EXSTYLE = (-20)
   GWL_USERDATA = (-21)
 End Enum
-
-#End If
-
 Public Const WM_USER = &H400
 
 Public Enum SWP_Flags
@@ -96,11 +97,14 @@ Public Enum SWP_Flags
     SWP_DEFERERASE = &H2000
     SWP_ASYNCWINDOWPOS = &H4000
 End Enum
+
+
 Public Const HWND_DESKTOP = 0&
 Public Const HWND_TOP = 0&
 Public Const HWND_BOTTOM = 1&
 Public Const HWND_TOPMOST = -1
 Public Const HWND_NOTOPMOST = -2
+
 
 Public Enum DT_Flags
     DT_BOTTOM = &H8&
@@ -131,7 +135,7 @@ Public Declare PtrSafe Function SetWindowPos Lib "user32" (ByVal hWnd As LongPtr
 
 Public Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal hWnd As LongPtr, lpRect As RECT) As Long
 Public Declare PtrSafe Function GetClientRect Lib "user32" (ByVal hWnd As LongPtr, lpRect As RECT) As Long
-
+#End If
 Public Enum ICC_CLASS
     ICC_LISTVIEW_CLASSES = &H1&
     ICC_TREEVIEW_CLASSES = &H2&
@@ -278,10 +282,7 @@ Public Type NMCUSTOMDRAW
     uItemState As Long
     lItemlParam As LongPtr
 End Type
-Public Type NMTTCUSTOMDRAW
-	nmcd As NMCUSTOMDRAW
-    uDrawFlags As Long
-End Type
+
 Public Type NMCUSTOMSPLITRECTINFO
 	hdr As NMHDR
     rcClient As RECT

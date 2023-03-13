@@ -67,26 +67,6 @@ End Interface
 
 Module modImageList
 
-Public Enum IL_DrawStyle
-  ILD_NORMAL = &H0
-  ILD_TRANSPARENT = &H1
-  ILD_MASK = &H10
-  ILD_IMAGE = &H20
-'#If (WIN32_IE >= &H300) Then
-  ILD_ROP = &H40
-'#End If
-  ILD_BLEND25 = &H2
-  ILD_BLEND50 = &H4
-  ILD_OVERLAYMASK = &HF00
- 
-  ILD_SELECTED = ILD_BLEND50
-  ILD_FOCUS = ILD_BLEND25
-  ILD_BLEND = ILD_BLEND50
-  ILD_PRESERVEALPHA = &H1000
-  ILD_SCALE = &H2000
-  ILD_DPISCALE = &H4000
-  ILD_ASYNC = &H8000&
-End Enum
 
 Public Const ILCF_MOVE = &H0
 
@@ -121,6 +101,12 @@ Public Enum ImageTypes
   IMAGE_ENHMETAFILE = 3
 End Enum
 
+Public Enum ILPFLAGS
+    ILP_NORMAL = 0 'Writes Or reads the stream using New sematics for this version of comctl32
+    ILP_DOWNLEVEL = 1
+End Enum
+
+#If TB_SHELLLIB_DEFINED = 0 Then
 Public Enum LoadResourceFlags
   LR_DEFAULTCOLOR = &H0
   LR_MONOCHROME = &H1
@@ -137,7 +123,6 @@ Public Enum LoadResourceFlags
   LR_SHARED = &H8000&
 End Enum
 
-#If TB_SHELLLIB_DEFINED = 0 Then
 Public Enum STGM
 	STGM_DIRECT = &H00000000
 	STGM_TRANSACTED = &H00010000
@@ -194,6 +179,7 @@ Public Enum STATFLAG
 	STATFLAG_NONAME = 1
 	STATFLAG_NOOPEN = 2
 End Enum
+
 Public Enum IMAGELISTDRAWFLAGS
 	ILD_NORMAL = &H00000000
 	ILD_TRANSPARENT = &H00000001
@@ -243,10 +229,7 @@ Public Enum ILDIFLAGS
 	ILDI_RESETACCESS = &H00000004 ' reset "has been accessed" flag
 	ILDI_QUERYACCESS = &H00000008 ' ask whether access flag is set (but do not reset)
 End Enum
-Public Enum ILPFLAGS
-    ILP_NORMAL = 0 'Writes Or reads the stream using New sematics for this version of comctl32
-    ILP_DOWNLEVEL = 1
-End Enum
+
 
 Public Type IMAGELISTSTATS
 	cbSize As Long

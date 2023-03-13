@@ -1,6 +1,5 @@
 Module modPropSheet
 
-#If TB_SHELLLIB_DEFINED = 0 Then
 Public Enum PSP_FLAGS
 	PSP_DEFAULT = &H00000000
 	PSP_DLGINDIRECT = &H00000001
@@ -235,6 +234,5 @@ Public Declare PtrSafe Function CreatePropertySheetPageW Lib "comctl32" (psp As 
 Public Declare PtrSafe Function DestroyPropertySheetPage Lib "comctl32" (ByVal hPage As LongPtr) As Long
 Public Declare PtrSafe Function PropertySheetPage Lib "comctl32" Alias "CreatePropertySheetPageA" (psp As Any) As LongPtr
 Public Declare PtrSafe Function PropertySheetPageW Lib "comctl32" (psp As Any) As LongPtr
-#End If
 
 End Module

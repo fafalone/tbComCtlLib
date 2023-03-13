@@ -1,5 +1,5 @@
 Module modVisualStyles
-'INCOMPLETE!!!
+'INCOMPLETE!!! (?)
 
 
 Public Const VSCLASS_AEROWIZARDSTYLE = "AEROWIZARDSTYLE"

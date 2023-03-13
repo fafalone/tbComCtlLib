@@ -1,3 +1,405 @@
+#If TB_SHELL_LIB_DEFINED = 0 Then
+	
+[ InterfaceId ("00000114-0000-0000-C000-000000000046") ]
+[ OleAutomation (False) ]
+Interface IOleWindow Extends IUnknown
+    Function GetWindow() As LongPtr
+    Sub ContextSensitiveHelp(ByVal fEnterMode As Long)
+End Interface
+[ InterfaceId ("96a23e16-a1bc-11d1-b084-00c04fc33aa5") ]
+[ OleAutomation (False) ]
+Interface ILVRange Extends stdole.IUnknown
+    Sub IncludeRange(ByVal iBegin As Long, ByVal iEnd As Long)
+    Sub ExcludeRange(ByVal iBegin As Long, ByVal iEnd As Long)
+    Sub InvertRange(ByVal iBegin As Long, ByVal iEnd As Long)
+    Sub InsertItem(ByVal iItem As Long)
+    Sub RemoveItem(ByVal iItem As Long)
+    Sub Clear()
+    Sub IsSelected(ByVal iItem As Long)
+    Sub IsEmpty()
+    Sub NextSelected(ByVal iItem As Long, piItem As Long)
+    Sub NextUnSelected(ByVal iItem As Long, piItem As Long)
+    Sub CountIncluded(pcIncluded As Long)
+End Interface
+
+[ InterfaceId ("44C09D56-8D3B-419D-A462-7B956B105B47") ]
+[ OleAutomation (False) ]
+Interface IOwnerDataCallback Extends stdole.IUnknown
+    Sub GetItemPosition(ByVal iItem As Long, pt As POINT)
+    Sub SetItemPosition(ByVal iItem As Long, pt As POINT)
+    Sub GetItemInGroup(ByVal groupIndex As Long, ByVal groupWideItemIndex As Long, pTotalItemIndex As Long)
+    Sub GetItemGroup(ByVal iItem As Long, ByVal occurenceIndex As Long, pGroupIndex As Long)
+    Sub GetItemGroupCount(ByVal iItem As Long, pOccurenceCount As Long)
+    Sub OnCacheHint(ByVal lviFirst As LongLong, ByVal lviiLast As LongLong) 'Byval LVITEMINDEX
+End Interface
+
+[ InterfaceId ("6E71A510-732A-4557-9596-A827E36DAF8F") ]
+[ OleAutomation (False) ]
+Interface IPropertyControlBase Extends stdole.IUnknown
+    Sub Initialize(ByVal pUnk As stdole.IUnknown, ByVal pct As Long)
+    Sub GetSize(ByVal prt As Long, ByVal hDC As LongPtr, siz1 As SIZE, siz2 As SIZE)
+    Sub SetWindowTheme(ByVal lpsz1 As LongPtr, ByVal lpsz2 As LongPtr)
+    Sub SetFont(ByVal phf As LongPtr)
+    Sub SetTextColor(ByVal clrText As Long)
+    Sub GetFlags(pdwFlags As Long)
+    Sub SetFlags(ByVal dwMask As Long, ByVal dwFlags As Long)
+    Sub AdjustWindowRectPCB(ByVal hWnd As LongPtr, prc1 As RECT, prc2 As RECT, ByVal unk As Long)
+    Sub SetValue(ByVal pUnk As stdole.IUnknown)
+    Sub InvokeDefaultAction()
+    Sub Destroy()
+    Sub SetFormatFlags(ByVal dwFlags As Long)
+    Sub GetFormatFlags(pdwFlags As Long)
+End Interface
+
+[ InterfaceId ("5E82A4DD-9561-476A-8634-1BEBACBA4A38") ]
+[ OleAutomation (False) ]
+Interface IPropertyControl Extends IPropertyControlBase
+    Sub GetValue(riid As UUID, ppv As Any)
+    Sub Create(ByVal hWnd As LongPtr, prc As RECT, prc2 As RECT, ByVal unk As Long)
+    Sub SetPosition(prc As RECT, prc2 As RECT)
+    Sub IsModified(bModified As Long)
+    Sub SetModified(ByVal bModified As Long)
+    Sub ValidationFailed(ByVal lpsz As LongPtr)
+    Sub GetState(pState As Long)
+End Interface
+
+[ InterfaceId ("E6DFF6FD-BCD5-4162-9C65-A3B18C616FDB") ]
+[ OleAutomation (False) ]
+Interface IDrawPropertyControl Extends IPropertyControlBase
+    Sub GetDrawFlags(pdwFlags As Long)
+    Sub WindowlessDraw(ByVal hDC As LongPtr, pRect As RECT, ByVal a As Long)
+    Sub HasVisibleContent()
+    Sub GetDisplayText(lpText As LongPtr)
+    Sub GetTooltipInfo(ByVal hDC As LongPtr, sz As SIZE, unk As Long)
+End Interface
+
+[ InterfaceId ("7AF7F355-1066-4E17-B1F2-19FE2F099CD2") ]
+[ OleAutomation (False) ]
+Interface IPropertyValue Extends stdole.IUnknown
+    Sub SetPropertyKey(pk As PROPERTYKEY)
+    Sub GetPropertyKey(bk As PROPERTYKEY)
+    Sub GetValue(pprop As Variant)
+    Sub InitValue(ByVal pprop As Variant)
+End Interface
+
+[ InterfaceId ("11A66240-5489-42C2-AEBF-286FC831524C") ]
+[ OleAutomation (False) ]
+Interface ISubItemCallback Extends stdole.IUnknown
+    Sub GetSubItemTitle(ByVal subitemIndex As Long, ByVal lpszBuffer As LongPtr, ByVal BufferSize As Long)
+    Sub GetSubItemControl(ByVal itemIndex As Long, ByVal subItemIndex As Long, requiredInterface As UUID, ppObject As Any)
+    Sub BeginSubItemEdit(ByVal itemIndex As Long, ByVal subItemIndex As Long, ByVal mode As Long, requiredInterface As UUID, ppObject As Any)
+    Sub EndSubItemEdit(ByVal itemIndex As Long, ByVal subItemIndex As Long, ByVal mode As Long, ByVal ppc As IPropertyControl)
+    Sub BeginGroupEdit(ByVal groupIndex As Long, requiredInterface As UUID, ppObject As Any)
+    Sub EndGroupEdit(ByVal groupIndex As Long, ByVal mode As Long, ByVal pPropertyControl As IPropertyControl)
+    Sub OnInvokeVerb(ByVal itemIndex As Long, ByVal pVerb As LongPtr)
+End Interface
+
+[ InterfaceId ("E5B16AF2-3990-4681-A609-1F060CD14269") ]
+[ OleAutomation (False) ]
+Interface IListView Extends IOleWindow 'Windows 7+ version
+    Sub GetImageList(ByVal lIndex As Long, himl As LongPtr)
+    Sub SetImageList(ByVal lIndex As Long, ByVal himl As LongPtr, phimlOld As LongPtr)
+    Sub GetBackgroundColor(clrBk As Long)
+    Sub SetBackgroundColor(ByVal clrBk As Long)
+    Sub GetTextColor(clrText As Long)
+    Sub SetTextColor(ByVal clrText As Long)
+    Sub GetTextBackgroundColor(clrTextBk As Long)
+    Sub SetTextBackgroundColor(ByVal clrTextBk As Long)
+    Sub GetHotLightColor(clrHot As Long)
+    Sub SetHotLightColor(ByVal clrHot As Long)
+    Sub GetItemCount(nItems As Long)
+    Sub SetItemCount(ByVal nItems As Long, ByVal unk As Long)
+    Sub GetItem(ByVal ptLVI As LongPtr)
+    Sub SetItem(pLVI As LVITEMW)
+    Sub GetItemState(ByVal iItem As Long, ByVal iSubItem As Long, ByVal mask As LVITEM_state, pState As LVITEM_state)
+    Sub SetItemState(ByVal iItem As Long, ByVal iSubItem As Long, ByVal mask As LVITEM_state, ByVal pState As LVITEM_state)
+    Sub GetItemText(ByVal iItem As Long, ByVal iSubItem As Long, ByVal pBuffer As LongPtr, ByVal nBufferSize As Long)
+    Sub SetItemText(ByVal iItem As Long, ByVal iSubItem As Long, ByVal pszText As LongPtr)
+    Sub GetBackgroundImage(lvbk As LVBKIMAGEW)
+    Sub SetBackgroundImage(ByVal plvnk As LongPtr)
+    Sub GetFocusedColumn(iCol As Long)
+    Sub SetSelectionFlags(ByVal mask As Long, ByVal flags As Long)
+    Sub GetSelectedColumn(iCol As Long)
+    Sub SetSelectedColumn(ByVal iCol As Long)
+    Sub GetView(iView As Long)
+    Sub SetView(ByVal iView As Long)
+    Sub InsertItem(ByVal pItem As LongPtr, index As Long)
+    Sub DeleteItem(ByVal iIndex As Long)
+    Sub DeleteAllItems()
+    Sub UpdateItem(ByVal iItem As Long)
+    Sub GetItemRect(ByVal lvii As LongLong, ByVal nRectType As Long, prc As RECT)
+    Sub GetSubItemRect(ByVal lvii As LongLong, ByVal iSubItem As Long, ByVal nRectType As Long, prc As RECT)
+    Sub HitTestSubItem(pHitTestData As LVHITTESTINFO)
+    Sub GetIncrSearchString(ByVal pBuffer As LongPtr, ByVal BufferSize As Long, pCopiedChars As Long)
+    Sub GetItemSpacing(ByVal bSmallIconView As Long, pHorz As Long, pVert As Long)
+    Sub SetIconSpacing(ByVal nHoriz As Long, ByVal nVert As Long, pHoriz As Long, pVert As Long)
+    Sub GetNextItem(ByVal lvii As LongLong, ByVal lviiGroup As Long, ByVal flags As Long, plviiNext As LVITEMINDEX)
+    Sub FindItem(ByVal lvii As LongLong, lvfi As LVFINDINFOW, lviiFound As LVITEMINDEX)
+    Sub GetSelectionMark(lvii As LVITEMINDEX)
+    Sub SetSelectionMark(ByVal lvii As LongLong, lviiPrev As LVITEMINDEX)
+    Sub GetItemPosition(ByVal lvii As LongLong, pt As POINT)
+    Sub SetItemPosition(ByVal iItem As Long, pt As POINT)
+    Sub ScrollView(ByVal hDist As Long, ByVal vDist As Long)
+    Sub EnsureItemVisible(ByVal lvii As LongLong, ByVal fPartialOk As Long)
+    Sub EnsureSubItemVisible(ByVal lvii As LongLong, ByVal iSubItem As Long)
+    Sub EditSubitem(ByVal lvii As LongLong, ByVal iSubItem As Long)
+    Sub RedrawItems(ByVal iFirst As Long, ByVal iLast As Long)
+    Sub ArrangeItems(ByVal mode As Long)
+    Sub RecomputeItems(ByVal unk As Long)
+    Sub GetEditControl(hEdit As LongPtr)
+    Sub EditLabel(ByVal lvii As LongLong, ByVal initialEditText As LongPtr, phwndEdit As LongPtr)
+    Sub EditGroupLabel(ByVal iGroup As Long)
+    Sub CancelLabelEdit()
+    Sub GetEditItem(lvii As LVITEMINDEX, iSubItem As Long)
+    Sub HitTest(lvhti As LVHITTESTINFO)
+    Sub GetStringWidth(ByVal pString As LongPtr, pWidth As Long)
+    Sub GetColumn(ByVal iCol As Long, pCol As LVCOLUMNW)
+    Sub SetColumn(ByVal iCol As Long, pCol As LVCOLUMNW)
+    Sub GetColumnOrderArray(ByVal iNumOfColumns As Long, pCol As Long)
+    Sub SetColumnOrderArray(ByVal iNumOfColumns As Long, pCol As Long)
+    Sub GetHeaderControl(hHeader As LongPtr)
+    Sub InsertColumn(ByVal iInsertAt As Long, lvcol As LVCOLUMNW)
+    Sub DeleteColumn(ByVal iIndex As Long)
+    Sub CreateDragImage(ByVal iItem As Long, ptUpperLeft As POINT, phiml As LongPtr)
+    Sub GetViewRect(rc As RECT)
+    Sub GetClientRect(ByVal unk As Long, rc As RECT)
+    Sub GetColumnWidth(ByVal iCol As Long, pWidth As Long)
+    Sub SetColumnWidth(ByVal iCol As Long, ByVal nWidth As Long)
+    Sub GetCallbackMask(pMask As Long)
+    Sub SetCallbackMask(ByVal mask As Long)
+    Sub GetItemIndex(iIndex As Long)
+    Sub GetCountPerPage(pCount As Long)
+    Sub GetOrigin(pt As POINT)
+    Sub GetSelectedCount(pSelCount As Long)
+    Sub SortItems(ByVal unk As Long, ByVal lParam As LongPtr, ByVal pfnCompare As LongPtr)
+    Sub GetExtendedStyle(dwStyle As Long)
+    Sub SetExtendedStyle(ByVal mask As Long, ByVal style As Long, dwOldStyle As Long)
+    Sub GetHoverTime(pTime As Long)
+    Sub SetHoverTime(ByVal time As Long, prevtime As Long)
+    Sub GetTooltip(hTooltip As LongPtr)
+    Sub SetToolTip(ByVal hTooltip As LongPtr, hOldTooltip As LongPtr)
+    Sub GetHotItem(lvii As LVITEMINDEX)
+    Sub SetHotItem(ByVal lvii As LongLong, oldlvii As LVITEMINDEX)
+    Sub GetHotCursor(hCursor As LongPtr)
+    Sub SetHotCursor(ByVal hCursor As LongPtr, hOldCursor As LongPtr)
+    Sub ApproximateViewRect(ByVal nItemCount As Long, pWidth As Long, pHeight As Long)
+    Sub SetRangeObject(ByVal unk As Long, ByVal plvRange As ILVRange)
+    Sub GetWorkAreas(ByVal iNumOfWorkAreas As Long, rc As RECT)
+    Sub SetWorkAreas(ByVal iNumOfWorkAreas As Long, rc As RECT)
+    Sub GetWorkAreaCount(pCount As Long)
+    Sub ResetEmptyText()
+    Sub EnableGroupView(ByVal fEnable As Long)
+    Sub IsGroupViewEnabled(pEnabled As Long)
+    Sub SortGroups(ByVal pfnGroupCompare As LongPtr, lParam As Any)
+    Sub GetGroupInfo(ByVal unk As Long, ByVal iGroupID As Long, lvg As LVGROUP)
+    Sub SetGroupInfo(ByVal unk As Long, ByVal iGroupID As Long, lvg As LVGROUP)
+    Sub GetGroupRect(ByVal unk As Long, ByVal iGroupID As Long, ByVal nRectType As Long, rc As RECT)
+    Sub GetGroupState(ByVal iGroupID As Long, ByVal mask As LVGROUPSTATE, state As LVGROUPSTATE)
+    Sub HasGroup(ByVal iGroupID As Long, pHasGroup As Long)
+    Sub InsertGroup(ByVal insertAt As Long, lvg As LVGROUP)
+    Sub RemoveGroup(ByVal iGroupID As Long)
+    Sub InsertGroupSorted(lvigs As LVINSERTGROUPSORTED, pGroupID As Long)
+    Sub GetGroupMetrics(lvgm As LVGROUPMETRICS)
+    Sub SetGroupMetrics(lvgm As LVGROUPMETRICS)
+    Sub RemoveAllGroups()
+    Sub GetFocusedGroup(iGroupID As Long)
+    Sub GetGroupCount(nCount As Long)
+    Sub SetOwnerDataCallback(ByVal pCallback As IOwnerDataCallback)
+    Sub GetTileViewInfo(pInfo As LVTILEVIEWINFO)
+    Sub SetTileViewInfo(pInfo As LVTILEVIEWINFO)
+    Sub GetTileInfo(pInfo As LVTILEINFO)
+    Sub SetTileInfo(pInfo As LVTILEINFO)
+    Sub GetInsertMark(pInsertMark As LVINSERTMARK)
+    Sub SetInsertMark(pInsertMark As LVINSERTMARK)
+    Sub GetInsertMarkRect(rc As RECT)
+    Sub GetInsertMarkColor(pClrMark As Long)
+    Sub SetInsertMarkColor(ByVal clrMark As Long, pclrMarkOld As Long)
+    Sub HitTestInsertMark(pt As POINT, pMark As LVINSERTMARK)
+    Sub SetInfoTip(pInfoTip As LVSETINFOTIP)
+    Sub GetOutlineColor(pClrOutline As Long)
+    Sub SetOutlineColor(ByVal clrOutline As Long, pclrOutlineOld As Long)
+    Sub GetFrozenItem(pItem As Long)
+    Sub SetFrozenItem(ByVal iItemSometimes As Long, ByVal iItemOtherTimes As Long)
+    Sub GetFrozenSlot(pSlotRect As RECT)
+    Sub SetFrozenSlot(ByVal fFreeze As Long, ptFrozen As POINT)
+    Sub GetViewMargin(rcMargin As RECT)
+    Sub SetViewMargin(rcMargin As RECT)
+    Sub SetKeyboardSelected(ByVal lvii As LongLong)
+    Sub MapIndexToId(ByVal iItem As Long, pId As Long)
+    Sub MapIdToIndex(ByVal iId As Long, iIndex As Long)
+    Sub IsItemVisible(ByVal lvii As LongLong, pVisible As Long)
+    Sub EnableAlphaShadow(ByVal fEnable As Long)
+    Sub GetGroupSubsetCount(pRows As Long)
+    Sub SetGroupSubsetCount(ByVal nRows As Long)
+    Sub GetVisibleSlotCount(pCount As Long)
+    Sub GetColumnMarginRect(rc As RECT)
+    Sub SetSubItemCallback(ByVal pCallback As ISubItemCallback)
+    Sub GetVisibleItemRange(pFirst As LVITEMINDEX, pLast As LVITEMINDEX)
+    Sub SetTypeAheadFlags(ByVal mask As Long, ByVal flags As Long)
+End Interface
+[ InterfaceId ("2FFE2979-5928-4386-9CDB-8E1F15B72FB4") ]
+[ OleAutomation (False) ]
+Interface IListViewVista Extends IOleWindow 'Vista-only version
+    Sub GetImageList(ByVal lIndex As Long, himl As LongPtr)
+    Sub SetImageList(ByVal lIndex As Long, ByVal himl As LongPtr, phimlOld As LongPtr)
+    Sub GetBackgroundColor(clrBk As Long)
+    Sub SetBackgroundColor(ByVal clrBk As Long)
+    Sub GetTextColor(clrText As Long)
+    Sub SetTextColor(ByVal clrText As Long)
+    Sub GetTextBackgroundColor(clrTextBk As Long)
+    Sub SetTextBackgroundColor(ByVal clrTextBk As Long)
+    Sub GetHotLightColor(clrHot As Long)
+    Sub SetHotLightColor(ByVal clrHot As Long)
+    Sub GetItemCount(nItems As Long)
+    Sub SetItemCount(ByVal nItems As Long, ByVal unk As Long)
+    Sub GetItem(ByVal ptLVI As LongPtr)
+    Sub SetItem(pLVI As LVITEMW)
+    Sub GetItemState(ByVal iItem As Long, ByVal iSubItem As Long, ByVal mask As LVITEM_state, pState As LVITEM_state)
+    Sub SetItemState(ByVal iItem As Long, ByVal iSubItem As Long, ByVal mask As LVITEM_state, ByVal pState As LVITEM_state)
+    Sub GetItemText(ByVal iItem As Long, ByVal iSubItem As Long, ByVal pBuffer As LongPtr, ByVal nBufferSize As Long)
+    Sub SetItemText(ByVal iItem As Long, ByVal iSubItem As Long, ByVal pszText As LongPtr)
+    Sub GetBackgroundImage(lvbk As LVBKIMAGEW)
+    Sub SetBackgroundImage(ByVal plvnk As LongPtr)
+    Sub GetFocusedColumn(iCol As Long)
+    Sub SetSelectionFlags(ByVal mask As Long, ByVal flags As Long)
+    Sub GetSelectedColumn(iCol As Long)
+    Sub SetSelectedColumn(ByVal iCol As Long)
+    Sub GetView(iView As Long)
+    Sub SetView(ByVal iView As Long)
+    Sub InsertItem(ByVal pItem As LongPtr, index As Long)
+    Sub DeleteItem(ByVal iIndex As Long)
+    Sub DeleteAllItems()
+    Sub UpdateItem(ByVal iItem As Long)
+    Sub GetItemRect(ByVal lvii As LongLong, ByVal nRectType As Long, prc As RECT)
+    Sub GetSubItemRect(ByVal lvii As LongLong, ByVal iSubItem As Long, ByVal nRectType As Long, prc As RECT)
+    Sub HitTestSubItem(pHitTestData As LVHITTESTINFO)
+    Sub GetIncrSearchString(ByVal pBuffer As LongPtr, ByVal BufferSize As Long, pCopiedChars As Long)
+    Sub GetItemSpacing(ByVal bSmallIconView As Long, pHorz As Long, pVert As Long)
+    Sub SetIconSpacing(ByVal nHoriz As Long, ByVal nVert As Long, pHoriz As Long, pVert As Long)
+    Sub GetNextItem(ByVal lvii As LongLong, ByVal lviiGroup As Long, ByVal flags As Long, plviiNext As LVITEMINDEX)
+    Sub FindItem(ByVal lvii As LongLong, lvfi As LVFINDINFOW, lviiFound As LVITEMINDEX)
+    Sub GetSelectionMark(lvii As LVITEMINDEX)
+    Sub SetSelectionMark(ByVal lvii As LongLong, lviiPrev As LVITEMINDEX)
+    Sub GetItemPosition(ByVal lvii As LongLong, pt As POINT)
+    Sub SetItemPosition(ByVal iItem As Long, pt As POINT)
+    Sub ScrollView(ByVal hDist As Long, ByVal vDist As Long)
+    Sub EnsureItemVisible(ByVal lvii As LongLong, ByVal fPartialOk As Long)
+    Sub EnsureSubItemVisible(ByVal lvii As LongLong, ByVal iSubItem As Long)
+    Sub EditSubitem(ByVal lvii As LongLong, ByVal iSubItem As Long)
+    Sub RedrawItems(ByVal iFirst As Long, ByVal iLast As Long)
+    Sub ArrangeItems(ByVal mode As Long)
+    Sub RecomputeItems(ByVal unk As Long)
+    Sub GetEditControl(hEdit As LongPtr)
+    Sub EditLabel(ByVal lvii As LongLong, ByVal initialEditText As LongPtr, phwndEdit As LongPtr)
+    Sub EditGroupLabel(ByVal iGroup As Long)
+    Sub CancelLabelEdit()
+    Sub GetEditItem(lvii As LVITEMINDEX, iSubItem As Long)
+    Sub HitTest(lvhti As LVHITTESTINFO)
+    Sub GetStringWidth(ByVal pString As LongPtr, pWidth As Long)
+    Sub GetColumn(ByVal iCol As Long, pCol As LVCOLUMNW)
+    Sub SetColumn(ByVal iCol As Long, pCol As LVCOLUMNW)
+    Sub GetColumnOrderArray(ByVal iNumOfColumns As Long, pCol As Long)
+    Sub SetColumnOrderArray(ByVal iNumOfColumns As Long, pCol As Long)
+    Sub GetHeaderControl(hHeader As LongPtr)
+    Sub InsertColumn(ByVal iInsertAt As Long, lvcol As LVCOLUMNW)
+    Sub DeleteColumn(ByVal iIndex As Long)
+    Sub CreateDragImage(ByVal iItem As Long, ptUpperLeft As POINT, phiml As LongPtr)
+    Sub GetViewRect(rc As RECT)
+    Sub GetClientRect(ByVal unk As Long, rc As RECT)
+    Sub GetColumnWidth(ByVal iCol As Long, pWidth As Long)
+    Sub SetColumnWidth(ByVal iCol As Long, ByVal nWidth As Long)
+    Sub GetCallbackMask(pMask As Long)
+    Sub SetCallbackMask(ByVal mask As Long)
+    Sub GetItemIndex(iIndex As Long)
+    Sub GetCountPerPage(pCount As Long)
+    Sub GetOrigin(pt As POINT)
+    Sub GetSelectedCount(pSelCount As Long)
+    Sub SortItems(ByVal unk As Long, ByVal lParam As LongPtr, ByVal pfnCompare As LongPtr)
+    Sub GetExtendedStyle(dwStyle As Long)
+    Sub SetExtendedStyle(ByVal mask As Long, ByVal style As Long, dwOldStyle As Long)
+    Sub GetHoverTime(pTime As Long)
+    Sub SetHoverTime(ByVal time As Long, prevtime As Long)
+    Sub GetTooltip(hTooltip As LongPtr)
+    Sub SetToolTip(ByVal hTooltip As LongPtr, hOldTooltip As LongPtr)
+    Sub GetHotItem(lvii As LVITEMINDEX)
+    Sub SetHotItem(ByVal lvii As LongLong, oldlvii As LVITEMINDEX)
+    Sub GetHotCursor(hCursor As LongPtr)
+    Sub SetHotCursor(ByVal hCursor As LongPtr, hOldCursor As LongPtr)
+    Sub ApproximateViewRect(ByVal nItemCount As Long, pWidth As Long, pHeight As Long)
+    Sub SetRangeObject(ByVal unk As Long, ByVal plvRange As ILVRange)
+    Sub GetWorkAreas(ByVal iNumOfWorkAreas As Long, rc As RECT)
+    Sub SetWorkAreas(ByVal iNumOfWorkAreas As Long, rc As RECT)
+    Sub GetWorkAreaCount(pCount As Long)
+    Sub ResetEmptyText()
+    Sub EnableGroupView(ByVal fEnable As Long)
+    Sub IsGroupViewEnabled(pEnabled As Long)
+    Sub SortGroups(ByVal pfnGroupCompare As LongPtr, lParam As Any)
+    Sub GetGroupInfo(ByVal unk As Long, ByVal iGroupID As Long, lvg As LVGROUP)
+    Sub SetGroupInfo(ByVal unk As Long, ByVal iGroupID As Long, lvg As LVGROUP)
+    Sub GetGroupRect(ByVal unk As Long, ByVal iGroupID As Long, ByVal nRectType As Long, rc As RECT)
+    Sub GetGroupState(ByVal iGroupID As Long, ByVal mask As LVGROUPSTATE, state As LVGROUPSTATE)
+    Sub HasGroup(ByVal iGroupID As Long, pHasGroup As Long)
+    Sub InsertGroup(ByVal insertAt As Long, lvg As LVGROUP)
+    Sub RemoveGroup(ByVal iGroupID As Long)
+    Sub InsertGroupSorted(lvigs As LVINSERTGROUPSORTED, pGroupID As Long)
+    Sub GetGroupMetrics(lvgm As LVGROUPMETRICS)
+    Sub SetGroupMetrics(lvgm As LVGROUPMETRICS)
+    Sub RemoveAllGroups()
+    Sub GetFocusedGroup(iGroupID As Long)
+    Sub GetGroupCount(nCount As Long)
+    Sub SetOwnerDataCallback(ByVal pCallback As IOwnerDataCallback)
+    Sub GetTileViewInfo(pInfo As LVTILEVIEWINFO)
+    Sub SetTileViewInfo(pInfo As LVTILEVIEWINFO)
+    Sub GetTileInfo(pInfo As LVTILEINFO)
+    Sub SetTileInfo(pInfo As LVTILEINFO)
+    Sub GetInsertMark(pInsertMark As LVINSERTMARK)
+    Sub SetInsertMark(pInsertMark As LVINSERTMARK)
+    Sub GetInsertMarkRect(rc As RECT)
+    Sub GetInsertMarkColor(pClrMark As Long)
+    Sub SetInsertMarkColor(ByVal clrMark As Long, pclrMarkOld As Long)
+    Sub HitTestInsertMark(pt As POINT, pMark As LVINSERTMARK)
+    Sub SetInfoTip(pInfoTip As LVSETINFOTIP)
+    Sub GetOutlineColor(pClrOutline As Long)
+    Sub SetOutlineColor(ByVal clrOutline As Long, pclrOutlineOld As Long)
+    Sub GetFrozenItem(pItem As Long)
+    Sub SetFrozenItem(ByVal iItemSometimes As Long, ByVal iItemOtherTimes As Long)
+    Sub GetFrozenSlot(pSlotRect As RECT)
+    Sub SetFrozenSlot(ByVal fFreeze As Long, ptFrozen As POINT)
+    Sub GetViewMargin(rcMargin As RECT)
+    Sub SetViewMargin(rcMargin As RECT)
+    Sub SetKeyboardSelected(ByVal lvii As LongLong)
+    Sub MapIndexToId(ByVal iItem As Long, pId As Long)
+    Sub MapIdToIndex(ByVal iId As Long, iIndex As Long)
+    Sub IsItemVisible(ByVal lvii As LongLong, pVisible As Long)
+    Sub GetGroupSubsetCount(pRows As Long)
+    Sub SetGroupSubsetCount(ByVal nRows As Long)
+    Sub GetVisibleSlotCount(pCount As Long)
+    Sub GetColumnMarginRect(rc As RECT)
+    Sub SetSubItemCallback(ByVal pCallback As ISubItemCallback)
+    Sub GetVisibleItemRange(pFirst As LVITEMINDEX, pLast As LVITEMINDEX)
+    Sub SetTypeAheadFlags(ByVal mask As Long, ByVal flags As Long)
+End Interface
+
+[ InterfaceId ("88EB9442-913B-4AB4-A741-DD99DCB7558B") ]
+[ OleAutomation (False) ]
+Interface IListViewFooterCallback Extends stdole.IUnknown
+    Sub OnButtonClicked(ByVal itemIndex As Long, ByVal lParam As Long, pRemoveFooter As Long)
+    Sub OnDestroyButton(ByVal itemIndex As Long, ByVal lParam As Long)
+End Interface
+
+[ InterfaceId ("F0034DA8-8A22-4151-8F16-2EBA76565BCC") ]
+[ OleAutomation (False) ]
+Interface IListViewFooter Extends stdole.IUnknown
+    Sub IsVisible(pVisible As Long)
+    Sub GetFooterFocus(pItemIndex As Long)
+    Sub SetFooterFocus(ByVal pItemIndex As Long)
+    Sub SetIntroText(ByVal pszText As LongPtr)
+    Sub Show(ByVal pCallbackObject As IListViewFooterCallback)
+    Sub RemoveAllButtons()
+    Sub InsertButton(ByVal insertAt As Long, ByVal pszText As LongPtr, ByVal pszAltText As LongPtr, ByVal iconIndex As Long, ByVal lParam As Long)
+    Sub GetButtonLParam(lParam As Long)
+End Interface
+#End If
 Module modListViewAndHeader
 
 Public Const WC_LISTVIEW = "SysListView32"
@@ -417,6 +819,29 @@ Public Type LVITEM 'LVITEMW
   iGroup As Long 'for single item in multiple groups in virtual listview
 '#End If
 End Type
+Public Type LVITEMW 'LVITEMW
+  Mask As LVITEM_mask
+  iItem As Long
+  iSubItem As Long
+  State As LVITEM_state
+  StateMask As LVITEM_state
+  pszText As LongPtr
+  cchTextMax As Long
+  iImage As Long
+  lParam As LongPtr
+'#If (WIN32_IE >= &H300) Then
+  iIndent As Long
+'#End If
+'#If (WIN32_IE >= &H501) Then
+  iGroupId As Long
+  cColumns As Long
+  puColumns As LongPtr
+'#End If
+'#If (WIN32_IE >= &H600) Then
+  piColFmt As LongPtr 'array of certain LVCFMT_ for each subitem
+  iGroup As Long 'for single item in multiple groups in virtual listview
+'#End If
+End Type
 Public Type LVITEMA   ' LVITEM with pszText as string
   Mask As LVITEM_mask
   iItem As Long
@@ -468,6 +893,14 @@ Public Enum LVITEM_state
   LVIS_STATEIMAGEMASK = &HF000&
 End Enum
 Public Type LVBKIMAGE
+  ulFlags As LVBKIMAGE_Flags
+  hBm As LongPtr
+  pszImage As LongPtr  ' if String, must be pre-allocated
+  cchImageMax As Long
+  XOffsetPercent As Long
+  YOffsetPercent As Long
+End Type
+Public Type LVBKIMAGEW
   ulFlags As LVBKIMAGE_Flags
   hBm As LongPtr
   pszImage As LongPtr  ' if String, must be pre-allocated
