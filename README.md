@@ -1,5 +1,5 @@
 # tbComCtlLib
-twinBASIC Common Controls Definitions Library 2.0 (x86/x64)
+twinBASIC Common Controls Definitions Library 2.1 (x86/x64)
 
 Provides a complete set of Common Controls 6.0 definitions for 32bit and 64bit projects.
 
@@ -9,6 +9,7 @@ You can browse individual source files in the Export folder. The project source 
 
 Note: For RichEdit OLE Extensions, add [tbShellLib](https://github.com/fafalone/tbShellLib). 
 
+**Update (Mar 13 2023)**: Version 2.1 removes a duplicate type, adds certain interfaces and enums, and improves conflict resolution with tbShellLib.,
 **Update (Mar 06 2023)**: Version 2.0 adds all Common Dialog definitions from comdlg.h and adds missing PropertySheet header UDTs.
 
 **Update (Feb 06 2023)**: Version 1.2 fixes numerous hex literals that were defined in a way that would cause sign issues in bitwise operations.
