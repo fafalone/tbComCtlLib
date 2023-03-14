@@ -7,7 +7,7 @@ This is a TWINPACK package you can add as a Reference in the Settings page. It's
 
 You can browse individual source files in the Export folder. The project source is provided in .twinproj form, and the package to add as a reference is tbComCtlLib.twinpack.
 
-**Update (Mar 14 2024)**: Version 2.2 adds a number of ComCtl related interfaces from tbShellLib, and reduces conflicts with it when the `TB_SHELL_LIB_DEFINED` compiler constant is set.
+**Update (Mar 14 2024)**: Version 2.2 adds a number of ComCtl related interfaces from tbShellLib, and reduces conflicts with it when the `TB_SHELL_LIB_DEFINED` compiler constant is set; this is important because tbComCtlLib has now been added to tbShellLib-- if you're using tbShellLib, you no longer need this project.
 
 **Update (Mar 13 2023)**: Version 2.1 removes a duplicate type, adds certain interfaces and enums, and improves conflict resolution with tbShellLib.
 
