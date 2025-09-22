@@ -1,3 +1,7 @@
+# PROJECT DEPRECATED AND OUT OF DATE
+**This project was merged into [Windows Development Library for twinBASIC (WinDevLib)](https://github.com/fafalone/WinDevLib), and the definitions there are more complete, more up to date, and have had some bugs fixed.**
+
+
 # tbComCtlLib
 twinBASIC Common Controls Definitions Library 2.2 (x86/x64)
 
